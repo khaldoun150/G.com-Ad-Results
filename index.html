@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AL-GICOM | نتيجة الحملة الإعلانية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ============ VARIABLES (الألوان معكوسة: الأساسي أخضر، الثانوي كحلي) ============ */
+:root {
+  --primary: #3D9E89;
+  --primary-soft: #4eb8a1;
+  --accent: #211C55;
+  --accent-soft: #2e2870;
+  --gold: #D9A441;
+  --gold-soft: #f5e6c4;
+  --bg: #eef3f1;
+  --text: #1a1a2e;
+  --text-muted: #5b6473;
+  --success: #2e8b57;
+  --warning: #c77a1f;
+  --danger: #b83a3a;
+  --radius: 18px;
+  --glass-blur: 20px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'IBM Plex Sans Arabic', -apple-system, system-ui, sans-serif;
+  color: var(--text);
+  line-height: 1.65;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(circle at 5% 5%, rgba(61,158,137,0.40), transparent 40%),
+    radial-gradient(circle at 95% 10%, rgba(33,28,85,0.30), transparent 42%),
+    radial-gradient(circle at 10% 90%, rgba(217,164,65,0.28), transparent 42%),
+    radial-gradient(circle at 88% 88%, rgba(61,158,137,0.26), transparent 42%),
+    linear-gradient(160deg, #eef6f2 0%, #e9eef5 50%, #f2ece5 100%);
+  background-attachment: fixed;
+  padding-bottom: 40px;
+}
+
+/* ============ HEADER ============ */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 4px 30px rgba(33,28,85,0.06);
+  padding: 14px 28px;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 800; font-size: 17px;
+  box-shadow: 0 6px 18px rgba(33,28,85,0.25);
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-name { font-size: 18px; font-weight: 800; color: var(--accent); }
+.brand-sub { font-size: 10.5px; color: var(--text-muted); font-weight: 600; letter-spacing: 1.5px; }
+.header-date {
+  font-size: 12.5px; color: var(--text-muted); font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 10px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.85);
+}
+
+/* ============ TABS ============ */
+.tabs-wrap {
+  position: sticky; top: 71px; z-index: 90;
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,0.7);
+  padding: 0 20px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.tabs-wrap::-webkit-scrollbar { display: none; }
+.tabs { display: flex; gap: 2px; min-width: fit-content; }
+.tab-btn {
+  font-family: inherit; font-size: 14px; font-weight: 700;
+  padding: 15px 18px; border: none; background: transparent; cursor: pointer;
+  color: var(--text-muted); border-bottom: 3px solid transparent;
+  transition: all 0.2s; white-space: nowrap; position: relative;
+}
+.tab-btn:hover { color: var(--accent); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--primary); }
+.tab-btn.foundation-tab { color: var(--gold); }
+.tab-btn.foundation-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ============ CONTAINERS ============ */
+.container {
+  display: none; max-width: 1400px; margin: 0 auto;
+  padding: 26px 26px 40px;
+}
+.container.active { display: block; animation: fadeUp 0.35s ease-out; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ SECTION TITLES ============ */
+.section-title {
+  font-size: 21px; font-weight: 800; color: var(--accent);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+}
+.section-title i { color: var(--primary); }
+.section-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; font-weight: 500; }
+
+/* ============ HERO ============ */
+.hero {
+  background: linear-gradient(135deg, var(--accent) 0%, #3a3480 45%, var(--primary) 100%);
+  border-radius: 22px; padding: 34px; color: #fff;
+  margin-bottom: 26px; position: relative; overflow: hidden;
+  box-shadow: 0 20px 50px rgba(33,28,85,0.28), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.hero::after {
+  content: ''; position: absolute; top: -60%; left: -8%;
+  width: 420px; height: 420px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(217,164,65,0.35), transparent 70%);
+  pointer-events: none;
+}
+.hero::before {
+  content: ''; position: absolute; bottom: -90%; right: -8%;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.20), transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-badge {
+  display: inline-block; padding: 6px 14px; border-radius: 30px;
+  background: rgba(255,255,255,0.18); font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.8px; margin-bottom: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+.hero-meta {
+  font-size: 13px; opacity: 0.92; display: flex; gap: 20px; flex-wrap: wrap;
+  font-weight: 500;
+}
+.hero-meta span { display: inline-flex; align-items: center; gap: 7px; }
+.hero-kpis {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px; margin-top: 26px; position: relative; z-index: 1;
+}
+.hero-kpi {
+  background: rgba(255,255,255,0.13);
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 14px; padding: 14px 16px;
+  backdrop-filter: blur(8px);
+}
+.hero-kpi-label { font-size: 11px; opacity: 0.85; margin-bottom: 6px; font-weight: 600; }
+.hero-kpi-value { font-size: 22px; font-weight: 800; direction: ltr; text-align: right; unicode-bidi: plaintext; }
+.hero-kpi-value .unit { font-size: 11px; font-weight: 600; opacity: 0.75; margin-right: 4px; }
+
+/* ============ CARDS ============ */
+.grid-cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-bottom: 26px;
+}
+.grid-cards.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.grid-cards.cols-4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+.card {
+  position: relative; border-radius: var(--radius); padding: 20px;
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.75);
+  box-shadow: 0 10px 32px rgba(33,28,85,0.10), inset 0 1px 0 rgba(255,255,255,0.7);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex; flex-direction: column;
+  background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,255,255,0.45));
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 16px 42px rgba(33,28,85,0.14); }
+
+.card.tint-primary {
+  background: linear-gradient(135deg, rgba(61,158,137,0.22), rgba(255,255,255,0.55));
+  border-color: rgba(61,158,137,0.35);
+}
+.card.tint-accent {
+  background: linear-gradient(135deg, rgba(33,28,85,0.14), rgba(255,255,255,0.55));
+  border-color: rgba(33,28,85,0.28);
+}
+.card.tint-gold {
+  background: linear-gradient(135deg, rgba(217,164,65,0.22), rgba(255,255,255,0.55));
+  border-color: rgba(217,164,65,0.42);
+}
+
+.card.top-primary { border-top: 3px solid var(--primary); }
+.card.top-accent { border-top: 3px solid var(--accent); }
+.card.top-gold { border-top: 3px solid var(--gold); }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.card-label {
+  font-size: 13px; font-weight: 700; color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.card-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  background: rgba(61,158,137,0.18); color: var(--primary);
+  font-weight: 800; font-size: 15px;
+}
+.card-icon.blue { background: rgba(33,28,85,0.14); color: var(--accent); }
+.card-icon.gold { background: rgba(217,164,65,0.22); color: #a37a1d; }
+
+.card-value {
+  font-size: 28px; font-weight: 800; color: var(--accent);
+  letter-spacing: -0.6px; margin-bottom: 10px; line-height: 1.1;
+  direction: ltr; text-align: right; unicode-bidi: plaintext;
+}
+.card-value .unit { font-size: 12.5px; font-weight: 700; color: var(--text-muted); margin-right: 4px; }
+
+.card-note {
+  font-size: 12.5px; color: #374151; line-height: 1.55;
+  border-right: 3px solid var(--primary); padding-right: 10px;
+  margin-top: auto; font-weight: 500;
+}
+.card-note.gold { border-right-color: var(--gold); }
+.card-note.accent { border-right-color: var(--accent); }
+.card-note.success { border-right-color: var(--success); }
+
+/* ============ CHARTS ============ */
+.chart-container {
+  border-radius: var(--radius); padding: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.50));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 10px 32px rgba(33,28,85,0.09);
+  margin-bottom: 24px;
+}
+.chart-header { margin-bottom: 14px; }
+.chart-title { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+.chart-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.chart-body { position: relative; height: 320px; }
+.chart-body.tall { height: 380px; }
+.chart-body.short { height: 260px; }
+@media (max-width: 768px) { .chart-body { height: 260px; } .chart-body.tall { height: 300px; } }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 992px) { .chart-row { grid-template-columns: 1fr; } }
+
+/* ============ ANALYSIS BOX ============ */
+.analysis-box {
+  border-radius: var(--radius); padding: 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.50));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 10px 32px rgba(33,28,85,0.09);
+  margin-bottom: 24px;
+}
+.analysis-box h3 {
+  font-size: 16px; font-weight: 800; color: var(--accent);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.analysis-box h3 i { color: var(--primary); }
+.analysis-box p { font-size: 14.5px; color: #374151; line-height: 1.85; margin-bottom: 12px; font-weight: 500; }
+.analysis-box p:last-child { margin-bottom: 0; }
+.analysis-box ul { padding-right: 20px; margin-bottom: 12px; }
+.analysis-box li { font-size: 14.5px; line-height: 1.85; color: #374151; margin-bottom: 6px; font-weight: 500; }
+
+/* ============ METRIC GROUPS ============ */
+.metric-group { margin-bottom: 30px; }
+.metric-group-title {
+  font-size: 14px; font-weight: 800; color: var(--accent);
+  margin-bottom: 14px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary); display: flex; align-items: center; gap: 8px;
+}
+.metric-group-title i { color: var(--primary); }
+
+/* ============ SUB TABS ============ */
+.sub-tabs {
+  display: inline-flex; gap: 4px; padding: 5px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px; margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 6px 20px rgba(33,28,85,0.08);
+}
+.sub-tab-btn {
+  font-family: inherit; font-size: 13px; font-weight: 700;
+  padding: 9px 20px; border: none; background: transparent;
+  border-radius: 8px; cursor: pointer; color: var(--text-muted);
+  transition: all 0.18s;
+}
+.sub-tab-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #fff; box-shadow: 0 4px 12px rgba(33,28,85,0.20);
+}
+.sub-tab-btn:hover:not(.active) { background: rgba(61,158,137,0.10); color: var(--accent); }
+.scale-section { display: none; }
+.scale-section.active { display: block; animation: fadeUp 0.3s ease-out; }
+
+/* ============ TABLE ============ */
+.table-wrap {
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.50));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.8);
+  overflow: hidden; margin-bottom: 24px;
+  box-shadow: 0 10px 32px rgba(33,28,85,0.09);
+}
+.data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.data-table thead { background: rgba(61,158,137,0.12); }
+.data-table th {
+  padding: 14px; text-align: right; font-weight: 800;
+  color: var(--accent); font-size: 12.5px;
+  border-bottom: 2px solid rgba(61,158,137,0.25);
+  white-space: nowrap;
+}
+.data-table td {
+  padding: 14px; border-bottom: 1px solid rgba(0,0,0,0.05);
+  color: #374151; font-weight: 500;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: rgba(61,158,137,0.05); }
+.data-table .num {
+  font-variant-numeric: tabular-nums; direction: ltr; text-align: right;
+  unicode-bidi: plaintext; font-weight: 600;
+}
+.data-table .best { color: var(--success); font-weight: 800; }
+.data-table .worst { color: var(--danger); font-weight: 800; }
+.data-table tfoot td {
+  background: rgba(33,28,85,0.06); font-weight: 800;
+  color: var(--accent); border-top: 2px solid rgba(33,28,85,0.15);
+}
+
+/* ============ BADGES ============ */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700;
+}
+.badge-success { background: rgba(46,139,87,0.15); color: var(--success); }
+.badge-warn { background: rgba(199,122,31,0.15); color: var(--warning); }
+.badge-danger { background: rgba(184,58,58,0.15); color: var(--danger); }
+.badge-info { background: rgba(33,28,85,0.10); color: var(--accent); }
+.badge-gold { background: rgba(217,164,65,0.22); color: #8a6210; }
+.badge-primary { background: rgba(61,158,137,0.18); color: var(--primary); }
+
+/* ============ RECOMMENDATIONS ============ */
+.rec-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px; margin-bottom: 26px;
+}
+.rec-card {
+  border-radius: var(--radius); padding: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.50));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 10px 32px rgba(33,28,85,0.09);
+  border-right: 4px solid var(--primary);
+}
+.rec-card.priority-high { border-right-color: var(--danger); }
+.rec-card.priority-med { border-right-color: var(--gold); }
+.rec-card.priority-low { border-right-color: var(--success); }
+.rec-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 12px; gap: 8px;
+}
+.rec-title { font-size: 15px; font-weight: 800; color: var(--accent); }
+.rec-body { font-size: 13px; color: #4b5563; line-height: 1.75; font-weight: 500; }
+.rec-row { margin-top: 8px; font-size: 12.5px; }
+.rec-row .lbl { color: var(--text-muted); font-weight: 700; margin-left: 4px; }
+
+/* ============ FINAL NOTE ============ */
+.final-note {
+  margin-top: 28px;
+  background: linear-gradient(135deg, rgba(217,164,65,0.30), rgba(61,158,137,0.20));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1.5px solid rgba(217,164,65,0.55);
+  border-radius: 20px; padding: 26px;
+  box-shadow: 0 14px 40px rgba(217,164,65,0.18);
+  position: relative; overflow: hidden;
+}
+.final-note::before {
+  content: '✨';
+  position: absolute; top: 14px; left: 18px;
+  font-size: 26px; opacity: 0.6;
+}
+.final-note h3 {
+  font-size: 17px; font-weight: 800; color: var(--accent);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.final-note p { font-size: 15px; line-height: 1.9; color: #374151; font-weight: 600; }
+
+/* ============ VERIFICATION LIST ============ */
+.verify-item {
+  display: flex; gap: 12px; padding: 13px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.verify-item:last-child { border-bottom: none; }
+.verify-icon {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800;
+  background: rgba(46,139,87,0.18); color: var(--success);
+}
+.verify-content { flex: 1; font-size: 13.5px; color: #374151; line-height: 1.7; font-weight: 500; }
+.verify-content strong { color: var(--accent); font-weight: 800; }
+
+/* ============ FOUNDATION TAB — TIMELINE ============ */
+.timeline {
+  position: relative;
+  padding-right: 32px;
+  margin-bottom: 26px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  right: 10px; top: 10px; bottom: 10px;
+  width: 3px;
+  background: linear-gradient(180deg, var(--primary), var(--accent), var(--gold));
+  border-radius: 3px;
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 16px;
+  border-radius: 16px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.50));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.8);
+  box-shadow: 0 8px 24px rgba(33,28,85,0.08);
+  transition: transform 0.2s;
+}
+.timeline-item:hover { transform: translateX(-4px); }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  right: -30px; top: 24px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px rgba(61,158,137,0.25), 0 4px 12px rgba(61,158,137,0.3);
+}
+.timeline-item.gold::before { background: var(--gold); box-shadow: 0 0 0 3px rgba(217,164,65,0.28), 0 4px 12px rgba(217,164,65,0.3); }
+.timeline-item.accent::before { background: var(--accent); box-shadow: 0 0 0 3px rgba(33,28,85,0.20), 0 4px 12px rgba(33,28,85,0.25); }
+.timeline-item .tl-head {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.timeline-item .tl-days {
+  font-size: 11.5px; font-weight: 800;
+  padding: 4px 12px; border-radius: 20px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+.timeline-item.gold .tl-days { background: linear-gradient(135deg, var(--gold), #b8832e); }
+.timeline-item .tl-title {
+  font-size: 15px; font-weight: 800; color: var(--accent);
+}
+.timeline-item .tl-body {
+  font-size: 13.5px; color: #4b5563; line-height: 1.75; font-weight: 500;
+}
+.timeline-item .tl-budget {
+  display: inline-block; margin-top: 8px;
+  font-size: 12px; font-weight: 700;
+  padding: 3px 10px; border-radius: 8px;
+  background: rgba(217,164,65,0.20); color: #8a6210;
+}
+
+/* ============ FOUNDATION — BUDGET BAR ============ */
+.budget-bar {
+  display: flex;
+  height: 54px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 24px rgba(33,28,85,0.12);
+  border: 1px solid rgba(255,255,255,0.7);
+}
+.budget-bar span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 0.3px;
+  transition: all 0.3s;
+}
+.budget-bar span:hover { filter: brightness(1.1); }
+.budget-bar .seg-test { background: linear-gradient(135deg, var(--primary), #4eb8a1); }
+.budget-bar .seg-scale { background: linear-gradient(135deg, var(--accent), #3a3480); }
+.budget-bar .seg-final { background: linear-gradient(135deg, var(--gold), #b8832e); }
+
+/* ============ FOUNDATION — EXPECTED VS ACTUAL ============ */
+.compare-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  font-size: 13.5px;
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-row.head {
+  background: rgba(61,158,137,0.10);
+  font-weight: 800;
+  color: var(--accent);
+  border-radius: 10px 10px 0 0;
+  border-bottom: 2px solid rgba(61,158,137,0.25);
+}
+.compare-row .label { font-weight: 700; color: var(--text); }
+.compare-row .val { font-weight: 600; font-variant-numeric: tabular-nums; direction: ltr; text-align: center; }
+.compare-row .actual { color: var(--accent); font-weight: 800; }
+.compare-row .status {
+  font-size: 11px; font-weight: 800;
+  padding: 4px 10px; border-radius: 20px;
+  text-align: center;
+  white-space: nowrap;
+}
+.status.up { background: rgba(46,139,87,0.18); color: var(--success); }
+.status.down { background: rgba(46,139,87,0.18); color: var(--success); }
+.status.equal { background: rgba(217,164,65,0.20); color: #8a6210; }
+
+/* ============ IMPACT CARDS ============ */
+.impact-card {
+  border-radius: var(--radius); padding: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55));
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow: 0 10px 30px rgba(33,28,85,0.10);
+  border-top: 3px solid var(--primary);
+  position: relative;
+}
+.impact-card.gold { border-top-color: var(--gold); }
+.impact-card.accent { border-top-color: var(--accent); }
+.impact-card .impact-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  background: rgba(61,158,137,0.16);
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+.impact-card.gold .impact-icon { background: rgba(217,164,65,0.20); color: #a37a1d; }
+.impact-card.accent .impact-icon { background: rgba(33,28,85,0.12); color: var(--accent); }
+.impact-card h4 {
+  font-size: 15px; font-weight: 800; color: var(--accent);
+  margin-bottom: 8px;
+}
+.impact-card p {
+  font-size: 13.5px; color: #4b5563; line-height: 1.75; font-weight: 500;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  header { padding: 12px 16px; }
+  .tabs-wrap { padding: 0 12px; top: 64px; }
+  .container { padding: 20px 14px 30px; }
+  .hero { padding: 24px 20px; border-radius: 18px; }
+  .hero h1 { font-size: 21px; }
+  .card-value { font-size: 24px; }
+  .grid-cards { grid-template-columns: 1fr; gap: 12px; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 10px 8px; }
+  .chart-container { padding: 16px; }
+  .section-title { font-size: 18px; }
+  .header-date { font-size: 11px; padding: 6px 10px; }
+  .timeline { padding-right: 24px; }
+  .timeline-item::before { right: -22px; }
+  .compare-row { grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; padding: 10px 12px; }
+  .compare-row .status { grid-column: 1 / -1; justify-self: start; }
+}
+
+/* Animation stagger */
+.card { animation: fadeIn 0.4s ease-out backwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Info icon */
+.info-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: rgba(33,28,85,0.15); color: var(--accent);
+  font-size: 10px; font-weight: 800; cursor: help;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="brand">
+    <div class="brand-mark">A</div>
+    <div class="brand-text">
+      <span class="brand-name">AL-GICOM</span>
+      <span class="brand-sub">نتيجة الحملة الإعلانية</span>
+    </div>
+  </div>
+  <div class="header-date">
+    <i data-lucide="calendar" width="14" height="14"></i>
+    <span>14/10/2026 — 14/11/2026</span>
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tabs-wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab-btn foundation-tab active" data-tab="foundation" onclick="openTab('foundation', event)">🏗️ التأسيس</button>
+    <button class="tab-btn" data-tab="overview" onclick="openTab('overview', event)">الخلاصة</button>
+    <button class="tab-btn" data-tab="budget" onclick="openTab('budget', event)">الميزانية</button>
+    <button class="tab-btn" data-tab="results" onclick="openTab('results', event)">النتايج</button>
+    <button class="tab-btn" data-tab="testing" onclick="openTab('testing', event)">التجريب</button>
+    <button class="tab-btn" data-tab="scaling" onclick="openTab('scaling', event)">التوسع</button>
+    <button class="tab-btn" data-tab="comparison" onclick="openTab('comparison', event)">المقارنة</button>
+    <button class="tab-btn" data-tab="recommendations" onclick="openTab('recommendations', event)">وش بعدين؟</button>
+  </div>
+</div>
+
+<!-- ===================== 0: FOUNDATION (NEW) ===================== -->
+<section class="container active" id="foundation">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🏗️ تأسيس الحملة · Meta Business</div>
+      <h1>رحلة AL-GICOM من التأسيس إلى النتيجة</h1>
+      <div class="hero-meta">
+        <span><i data-lucide="calendar" width="14" height="14"></i> 14/10/2026 — 14/11/2026</span>
+        <span><i data-lucide="target" width="14" height="14"></i> حملة نمو المتابعين داخل المملكة</span>
+      </div>
+      <div class="hero-kpis">
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">الميزانية الكلية</div>
+          <div class="hero-kpi-value">4,000 <span class="unit">ر.س</span></div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">مدة الحملة</div>
+          <div class="hero-kpi-value">28 <span class="unit">يوم</span></div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">أيام الإعلانات الفعلية</div>
+          <div class="hero-kpi-value">21 <span class="unit">يوم</span></div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">الهدف الأساسي</div>
+          <div class="hero-kpi-value" style="font-size:15px;">متابعين + وصول</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- الفكرة -->
+  <div class="analysis-box">
+    <h3><i data-lucide="lightbulb" width="18" height="18"></i> وش كانت الفكرة؟</h3>
+    <p>استلمنا حساب ميتا بزنس الكبير للشركة، وكانت المهمة واضحة: <strong>نطلّع حملة إعلانية مدروسة</strong> تهدف لزيادة المتابعين وتوسيع الوصول داخل المملكة. الميزانية المخصصة كانت 4,000 ريال، وخططنا نمشي بثلاث مراحل: <strong>اختبار → توسع → دفعة أخيرة</strong>، عشان نكتشف الإعلان الأنجح ونكبّر عليه.</p>
+    <p>النتيجة اللي طلعت بعد 21 يوم إعلانات فعليّة فاقت التوقعات في أكثر من مؤشر، وخلّت الحساب الكبير ينشط عضويًا بشكل ما كان متوقع.</p>
+  </div>
+
+  <!-- الخطوات الثلاث -->
+  <h2 class="section-title"><i data-lucide="list-ordered" width="22" height="22"></i> الخطوات الثلاث للتأسيس</h2>
+  <div class="grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+    <div class="card tint-primary top-primary">
+      <div class="card-top">
+        <div class="card-label">الخطوة الأولى</div>
+        <div class="card-icon">1</div>
+      </div>
+      <h4 style="color:var(--accent);font-size:16px;margin:6px 0 10px;font-weight:800;">استلام وتظبيط الحساب</h4>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">
+        مراجعة شاملة لحساب ميتا بزنس: <strong>الصلاحيات، الصفحات، حسابات الإعلان، طرق الدفع، البكسل</strong>، وتنظيف أي إعدادات قديمة. الهدف: نبدأ من أرضية نظيفة وخالية من المشاكل.
+      </p>
+    </div>
+    <div class="card tint-accent top-accent">
+      <div class="card-top">
+        <div class="card-label">الخطوة الثانية</div>
+        <div class="card-icon blue">2</div>
+      </div>
+      <h4 style="color:var(--accent);font-size:16px;margin:6px 0 10px;font-weight:800;">تخصيص الميزانية</h4>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">
+        25% من إجمالي الميزانية الإعلانية للمنصة = <strong>4,000 ريال</strong>. توزّعت على ثلاث مراحل مدروسة: اختبار (800)، توسع (2,400)، ودفعة أخيرة (800).
+      </p>
+    </div>
+    <div class="card tint-gold top-gold">
+      <div class="card-top">
+        <div class="card-label">الخطوة الثالثة</div>
+        <div class="card-icon gold">3</div>
+      </div>
+      <h4 style="color:var(--accent);font-size:16px;margin:6px 0 10px;font-weight:800;">إطلاق الحملة</h4>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">
+        إعلانات مدفوعة على المحتوى الموجود فعلاً، بهدف <strong>زيادة المتابعين واستهداف جمهور جديد</strong> داخل السعودية. ما صرفنا على إنتاج محتوى جديد — استغللنا الموجود بأفضل شكل.
+      </p>
+    </div>
+  </div>
+
+  <!-- الجدول الزمني -->
+  <h2 class="section-title"><i data-lucide="calendar-clock" width="22" height="22"></i> الجدول الزمني (28 يوم)</h2>
+  <p class="section-subtitle">من استلام الحساب إلى تقرير النتايج — كل شي بخطة واضحة.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-head">
+        <span class="tl-days">اليوم 1–3</span>
+        <span class="tl-title">الاستلام والمراجعة</span>
+      </div>
+      <div class="tl-body">طلب الصلاحيات، تدقيق الحساب، فحص الإعلانات القديمة والجمهور المحفوظ، وتحديد المشاكل قبل الإطلاق.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-head">
+        <span class="tl-days">اليوم 4–5</span>
+        <span class="tl-title">التجهيز</span>
+      </div>
+      <div class="tl-body">ضبط البكسل والمدفوعات، اختيار أفضل 4–5 منشورات وريلز أداءً، بناء الجماهير وكتابة نصوص الإعلانات.</div>
+    </div>
+    <div class="timeline-item gold">
+      <div class="tl-head">
+        <span class="tl-days">اليوم 6–9</span>
+        <span class="tl-title">الإطلاق والاختبار</span>
+      </div>
+      <div class="tl-body">تشغيل 3 مجموعات إعلانية مختلفة ومراقبة مرحلة التعلّم. الهدف: نكتشف أي إعلان يمشي أحسن.</div>
+      <span class="tl-budget">💰 ميزانية الاختبار: 800 ريال</span>
+    </div>
+    <div class="timeline-item accent">
+      <div class="tl-head">
+        <span class="tl-days">اليوم 10–22</span>
+        <span class="tl-title">التوسّع</span>
+      </div>
+      <div class="tl-body">إيقاف الإعلانات الأضعف وزيادة ميزانية الأفضل تدريجياً (حتى 20% كل مرة) — عشان ما نحرق الميزانية على شي ما ينفع.</div>
+      <span class="tl-budget">💰 ميزانية التوسع: 2,400 ريال</span>
+    </div>
+    <div class="timeline-item gold">
+      <div class="tl-head">
+        <span class="tl-days">اليوم 23–26</span>
+        <span class="tl-title">الدفعة الأخيرة</span>
+      </div>
+      <div class="tl-body">تركيز كامل على أفضل إعلان وجمهور. نضخ الفلوس في اللي أثبت نفسه.</div>
+      <span class="tl-budget">💰 ميزانية الدفعة: 800 ريال</span>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-head">
+        <span class="tl-days">اليوم 27–28</span>
+        <span class="tl-title">التقرير</span>
+      </div>
+      <div class="tl-body">تجميع النتايج، تحليل الأداء، والتوصيات للمرحلة القادمة.</div>
+    </div>
+  </div>
+
+  <!-- توزيع الميزانية -->
+  <h2 class="section-title"><i data-lucide="pie-chart" width="22" height="22"></i> توزيع الميزانية (4,000 ريال)</h2>
+  <p class="section-subtitle">ثلاث مراحل — كل ريال بمكانه.</p>
+
+  <div class="budget-bar">
+    <span class="seg-test" style="width:20%">800</span>
+    <span class="seg-scale" style="width:60%">2,400</span>
+    <span class="seg-final" style="width:20%">800</span>
+  </div>
+
+  <div class="grid-cards" style="text-align:center;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+    <div class="card tint-primary">
+      <h4 style="color:var(--accent);font-size:16px;font-weight:800;margin-bottom:6px;">اختبار</h4>
+      <div style="font-size:22px;font-weight:800;color:var(--accent);direction:ltr;">800 ر.س</div>
+      <div style="font-size:13px;color:var(--text-muted);font-weight:600;margin-top:6px;">4 أيام · ≈ 200 ريال/يوم</div>
+    </div>
+    <div class="card tint-accent">
+      <h4 style="color:var(--accent);font-size:16px;font-weight:800;margin-bottom:6px;">توسّع</h4>
+      <div style="font-size:22px;font-weight:800;color:var(--accent);direction:ltr;">2,400 ر.س</div>
+      <div style="font-size:13px;color:var(--text-muted);font-weight:600;margin-top:6px;">13 يوم · ≈ 185 ريال/يوم</div>
+    </div>
+    <div class="card tint-gold">
+      <h4 style="color:var(--accent);font-size:16px;font-weight:800;margin-bottom:6px;">دفعة أخيرة</h4>
+      <div style="font-size:22px;font-weight:800;color:var(--accent);direction:ltr;">800 ر.س</div>
+      <div style="font-size:13px;color:var(--text-muted);font-weight:600;margin-top:6px;">4 أيام · ≈ 200 ريال/يوم</div>
+    </div>
+  </div>
+
+  <p style="text-align:center;font-size:13px;color:var(--text-muted);font-weight:600;margin-top:6px;">
+    📌 مدة الإعلانات الفعلية 21 يوم بمتوسط ≈ 190 ريال/يوم
+  </p>
+
+  <!-- الاستهداف -->
+  <h2 class="section-title" style="margin-top:30px;"><i data-lucide="crosshair" width="22" height="22"></i> الاستهداف</h2>
+  <p class="section-subtitle">حددنا الجمهور بدقة عشان كل ريال يوصل لمكانه الصحيح.</p>
+
+  <div class="grid-cards cols-4">
+    <div class="card tint-primary">
+      <div class="card-top">
+        <div class="card-label">الموقع</div>
+        <div class="card-icon"><i data-lucide="map-pin" width="16" height="16"></i></div>
+      </div>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">السعودية: الرياض، جدة، الدمام والخبر، مكة، المدينة.</p>
+    </div>
+    <div class="card tint-accent">
+      <div class="card-top">
+        <div class="card-label">العمر والجنس</div>
+        <div class="card-icon blue"><i data-lucide="users" width="16" height="16"></i></div>
+      </div>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">25–45 سنة، رجال ونساء.</p>
+    </div>
+    <div class="card tint-gold">
+      <div class="card-top">
+        <div class="card-label">الاهتمامات</div>
+        <div class="card-icon gold"><i data-lucide="heart" width="16" height="16"></i></div>
+      </div>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">أجهزة المطبخ، الطبخ، ديكور المنزل، التسوق أونلاين.</p>
+    </div>
+    <div class="card tint-primary">
+      <div class="card-top">
+        <div class="card-label">الأماكن</div>
+        <div class="card-icon"><i data-lucide="layout-grid" width="16" height="16"></i></div>
+      </div>
+      <p style="font-size:13.5px;color:#4b5563;line-height:1.75;font-weight:500;">ريلز، ستوري، وفيد إنستغرام (Advantage+ Placements).</p>
+    </div>
+  </div>
+
+  <div class="analysis-box" style="padding:16px 20px;">
+    <p style="margin:0;font-size:13.5px;"><strong>🎯 الهدف:</strong> زيارات الملف الشخصي (Profile Visits) لتحويلها إلى متابعين. هذا الهدف الأنسب لحساب جديد يبي يبني قاعدة جمهور.</p>
+  </div>
+
+  <!-- النتائج المتوقعة vs المحققة -->
+  <h2 class="section-title" style="margin-top:30px;"><i data-lucide="target" width="22" height="22"></i> النتائج المتوقعة vs المحققة</h2>
+  <p class="section-subtitle">خططنا لأرقام معينة بناءً على متوسطات السوق — وش اللي صار فعلاً؟</p>
+
+  <div class="table-wrap">
+    <div class="compare-row head">
+      <div class="label">المؤشر</div>
+      <div class="val">المتوقع</div>
+      <div class="val">المحقق</div>
+      <div class="status">النتيجة</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">مرات الظهور (Impressions)</div>
+      <div class="val">250K – 400K</div>
+      <div class="val actual">638K</div>
+      <div class="status up">↑ تجاوزنا</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">الوصول (Reach)</div>
+      <div class="val">150K – 250K</div>
+      <div class="val actual">369K</div>
+      <div class="status up">↑ تجاوزنا</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">زيارات الملف الشخصي</div>
+      <div class="val">4K – 6.5K</div>
+      <div class="val actual">207K</div>
+      <div class="status up">↑↑ تجاوزنا بكثير</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">المتابعين الجدد</div>
+      <div class="val">1,500 – 2,500</div>
+      <div class="val actual">1,360</div>
+      <div class="status equal">≈ ضمن النطاق</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">تكلفة الألف ظهور CPM</div>
+      <div class="val">10 – 16 ر.س</div>
+      <div class="val actual">5.45 ر.س</div>
+      <div class="status down">↓ أفضل</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">نسبة النقر CTR</div>
+      <div class="val">1.5% – 2.5%</div>
+      <div class="val actual">2.66%</div>
+      <div class="status up">↑ أعلى</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">تكلفة زيارة الملف</div>
+      <div class="val">0.6 – 1 ر.س</div>
+      <div class="val actual">0.016 ر.س</div>
+      <div class="status down">↓↓ أفضل بكثير</div>
+    </div>
+    <div class="compare-row">
+      <div class="label">تكلفة المتابع الواحد</div>
+      <div class="val">1.6 – 2.7 ر.س</div>
+      <div class="val actual">2.56 ر.س</div>
+      <div class="status equal">✓ ضمن النطاق</div>
+    </div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="trophy" width="18" height="18"></i> الخلاصة بالأرقام</h3>
+    <p>تجاوزنا التوقعات في <strong>5 مؤشرات أساسية</strong>، وطلعنا ضمن النطاق في الباقي. أهم إنجاز: <strong>زيارات الملف الشخصي</strong> اللي كانت متوقعة 4–6.5 ألف، وطلعت <strong>207 ألف</strong> — يعني أكثر من 30 ضعف التوقع.</p>
+    <p>هذا مو صدفة — سببه إن الإعلانات ما جابت نقرات فقط، بل أشعلت فضول الجمهور لزيارة الصفحة. وهذا بالضبط اللي نبيه عشان نبني جمهور قوي على المدى الطويل.</p>
+  </div>
+
+  <!-- وش انعكس إيجابياً -->
+  <h2 class="section-title" style="margin-top:30px;"><i data-lucide="sparkles" width="22" height="22"></i> وش انعكس إيجابياً على الحساب الكبير؟</h2>
+  <p class="section-subtitle">مو بس أرقام — الحساب نفسه صار أقوى وأكثر حيوية.</p>
+
+  <div class="grid-cards cols-2">
+    <div class="impact-card">
+      <div class="impact-icon"><i data-lucide="activity" width="22" height="22"></i></div>
+      <h4>الحساب صار حيوي ونشط</h4>
+      <p>31 يوم متواصل من النشاط الإعلاني خلّت الخوارزمية تعطي الحساب <strong>دفعة قوية في الظهور العضوي</strong>. الصفحة صارت تنعرض أكثر في نتائج البحث والاستكشاف، وهذا ينعكس على اكتساب متابعين جدد بدون ما تدفع.</p>
+    </div>
+
+    <div class="impact-card gold">
+      <div class="impact-icon"><i data-lucide="trending-up" width="22" height="22"></i></div>
+      <h4>الوصول العضوي انفجر</h4>
+      <p><strong>534 متابع جوا من غير نقر على الإعلان</strong> — يعني الجمهور زار الصفحة لحاله وتابع. وأكثر من <strong>207 ألف زيارة للملف الشخصي</strong>. هذا مؤشر إن المحتوى صار يجذب انتباه الناس بدون ما ندفع لكل واحد فيهم.</p>
+    </div>
+
+    <div class="impact-card accent">
+      <div class="impact-icon"><i data-lucide="globe" width="22" height="22"></i></div>
+      <h4>العلامة التجارية انتشرت</h4>
+      <p>وصلنا لـ <strong>369 ألف حساب فريد</strong> في 5 مدن سعودية رئيسية، مع <strong>638 ألف مرة ظهور</strong>. الوعي بعلامة AL-GICOM ارتفع بشكل ملحوظ، والحساب صار اسم يعرفه الجمهور المستهدف.</p>
+    </div>
+
+    <div class="impact-card gold">
+      <div class="impact-icon"><i data-lucide="database" width="22" height="22"></i></div>
+      <h4>الحساب صار جاهز للمرحلة الجاية</h4>
+      <p>بنينا جمهور جديد داخل المنصة (Lookalike source قوي)، والبكسل تعلّم من آلاف الأحداث. الصفحة صارت <strong>"مسخّنة" للحملات القادمة</strong> — يعني أي حملة جاية راح تنطلق من نقطة أقوى بكثير.</p>
+    </div>
+
+    <div class="impact-card">
+      <div class="impact-icon"><i data-lucide="heart" width="22" height="22"></i></div>
+      <h4>معدل التكرار صحي</h4>
+      <p>معدل التكرار <strong>1.72</strong> — ضمن النطاق المثالي (1–2). هذا يعني الإعلان وصل للجمهور أكثر من مرة، لكن بدون ما يسبب إزعاج أو إرهاق. نسبة النقر <strong>2.66%</strong> أعلى من متوسط السوق (1–2%).</p>
+    </div>
+
+    <div class="impact-card accent">
+      <div class="impact-icon"><i data-lucide="zap" width="22" height="22"></i></div>
+      <h4>كفاءة صرف ممتازة</h4>
+      <p>استغلينا <strong>99.93%</strong> من الرصيد الإعلاني، وباقي <strong>2.30 ر.س</strong> بس. هذا يعني ما في هدر — كل ريال راح لمكانه. التكلفة الحقيقية للمتابع <strong>2.56 ر.س</strong> — ضمن النطاق المستهدف.</p>
+    </div>
+  </div>
+
+  <!-- الرحلة كاملة -->
+  <h2 class="section-title" style="margin-top:30px;"><i data-lucide="route" width="22" height="22"></i> الرحلة كاملة — من التأسيس للنتيجة</h2>
+  <p class="section-subtitle">قصة الحملة في 4 خطوات بسيطة.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="tl-head">
+        <span class="tl-days" style="background:linear-gradient(135deg,var(--accent),#3a3480)">المرحلة 1</span>
+        <span class="tl-title">التأسيس والاستلام</span>
+      </div>
+      <div class="tl-body">راجعنا الحساب، ضبطنا البكسل والمدفوعات، واخترنا أفضل 4–5 منشورات وريلز أداءً. كل شي صار جاهز للإطلاق.</div>
+    </div>
+    <div class="timeline-item gold">
+      <div class="tl-head">
+        <span class="tl-days">المرحلة 2</span>
+        <span class="tl-title">التجريب — Testing</span>
+      </div>
+      <div class="tl-body">أطلقنا 3 مجموعات إعلانية، راقبنا مرحلة التعلّم، وطلعنا بأفضل تكلفة متابع (<strong>2.25 ر.س</strong>) — الأرخص بين كل المراحل.</div>
+      <span class="tl-budget">💰 845.54 ر.س · 376 متابع</span>
+    </div>
+    <div class="timeline-item accent">
+      <div class="tl-head">
+        <span class="tl-days" style="background:linear-gradient(135deg,var(--primary),var(--accent))">المرحلة 3</span>
+        <span class="tl-title">التوسع التدريجي — Scaling</span>
+      </div>
+      <div class="tl-body">وسعنا في المراحل الأنجح. تعلمنا من Scale 01 (زيارات كثيرة بدون متابعين)، وحسّنا في Scale 02 و Scale 03. النتيجة: تكلفة المتابع نزلت لـ <strong>3.82 ر.س</strong>.</div>
+      <span class="tl-budget">💰 2,630.42 ر.س · 450 متابع</span>
+    </div>
+    <div class="timeline-item gold">
+      <div class="tl-head">
+        <span class="tl-days">المرحلة 4</span>
+        <span class="tl-title">النتيجة — أثر الحساب الكبير</span>
+      </div>
+      <div class="tl-body">إجمالاً: <strong>1,360 متابع</strong>، <strong>207 ألف زيارة</strong>، <strong>369 ألف وصول</strong>. أهم من الأرقام: <strong>الحساب صار أقوى عضويًا</strong> ومهيّأ للمرحلة الجاية.</div>
+      <span class="tl-budget">🏆 استغللنا 99.93% من الرصيد</span>
+    </div>
+  </div>
+
+  <!-- الملاحظة الذهبية -->
+  <div class="final-note" style="margin-top:30px;">
+    <h3>🌟 الخلاصة الأهم</h3>
+    <p>الحملة الإعلانية أدت لاكتساب الحساب دفعة قوية في معدل الوصول والريتش العضوي، وهذا يخلي الصفحة تظهر بشكل أكثر حيوية ويساعدنا على اكتساب متابعين بشكل عضوي فيما بعد.</p>
+  </div>
+</section>
+
+<!-- ===================== 1: OVERVIEW ===================== -->
+<section class="container" id="overview">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">📊 الخلاصة التنفيذية</div>
+      <h1>الخلاصة بسرعة</h1>
+      <div class="hero-meta">
+        <span><i data-lucide="calendar" width="14" height="14"></i> من 14/10/2026 إلى 14/11/2026</span>
+        <span><i data-lucide="refresh-cw" width="14" height="14"></i> آخر تحديث: 14/11/2026</span>
+      </div>
+      <div class="hero-kpis">
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">إجمالي الميزانية</div>
+          <div class="hero-kpi-value" data-bind="budgetTotal" data-format="currency"></div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">صافي الرصيد</div>
+          <div class="hero-kpi-value" data-bind="netBudget" data-format="currency"></div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">الإنفاق الفعلي</div>
+          <div class="hero-kpi-value" data-bind="actualSpend" data-format="currency"></div>
+        </div>
+        <div class="hero-kpi">
+          <div class="hero-kpi-label">الباقي</div>
+          <div class="hero-kpi-value" data-bind="remaining" data-format="currency"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title"><i data-lucide="zap" width="22" height="22"></i> الخلاصة بسرعة</h2>
+  <p class="section-subtitle">أهم شي تحتاج تعرفه في 30 ثانية.</p>
+
+  <div class="grid-cards cols-4">
+    <div class="card tint-primary top-primary">
+      <div class="card-top">
+        <div class="card-label">وصلنا لكم حساب؟</div>
+        <div class="card-icon"><i data-lucide="users" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="reach" data-format="int"></span></div>
+      <div class="card-note">انتشار قوي مرة — تعدينا ثلث مليون حساب.</div>
+    </div>
+    <div class="card tint-gold top-gold">
+      <div class="card-top">
+        <div class="card-label">كم متابع جديد؟</div>
+        <div class="card-icon gold"><i data-lucide="user-plus" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="totalFollowers" data-format="int"></span></div>
+      <div class="card-note gold">منهم <strong data-bind="paidFollowers" data-format="int"></strong> من الإعلان، و<strong data-bind="organicFollowers" data-format="int"></strong> جوا لحالهم.</div>
+    </div>
+    <div class="card tint-accent top-accent">
+      <div class="card-top">
+        <div class="card-label">تكلفة المتابع المدفوع</div>
+        <div class="card-icon blue"><i data-lucide="target" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="costPerPaidFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note accent">اللي دفعناه على الإعلانات ÷ عدد المتابعين اللي جوا منها.</div>
+    </div>
+    <div class="card tint-primary top-primary">
+      <div class="card-top">
+        <div class="card-label">التكلفة الحقيقية للمتابع</div>
+        <div class="card-icon"><i data-lucide="sparkles" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="costPerTotalFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note success">لو حسبنا المدفوع والعضوي مع بعض.</div>
+    </div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="help-circle" width="18" height="18"></i> ثلاث أسئلة بسيطة</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:10px;">
+      <div style="padding:16px;background:rgba(61,158,137,0.10);border-radius:12px;border:1px solid rgba(61,158,137,0.22);">
+        <div style="font-size:12px;font-weight:800;color:var(--primary);margin-bottom:8px;">1️⃣ وش صار؟</div>
+        <p style="font-size:13.5px;line-height:1.8;margin:0;">وصلت الحملة لـ <strong data-bind="reach" data-format="int"></strong> حساب، وجبنا <strong data-bind="totalFollowers" data-format="int"></strong> متابع جديد، وصرفنا <strong data-bind="utilization" data-format="pct"></strong> من الرصيد الإعلاني. يعني فلوسنا كلها راحت للإعلانات.</p>
+      </div>
+      <div style="padding:16px;background:rgba(217,164,65,0.12);border-radius:12px;border:1px solid rgba(217,164,65,0.28);">
+        <div style="font-size:12px;font-weight:800;color:#8a6210;margin-bottom:8px;">2️⃣ وش تعلمنا؟</div>
+        <p style="font-size:13.5px;line-height:1.8;margin:0;">التجريب كان الأرخص (٢.٢٥ ريال للمتابع). لما حطينا ميزانية أكبر في إعلان واحد ناجح (Scale 03)، نزلت التكلفة لـ ٣.٨٢. بس التوسع العشوائي جاب زيارات بدون متابعين.</p>
+      </div>
+      <div style="padding:16px;background:rgba(33,28,85,0.08);border-radius:12px;border:1px solid rgba(33,28,85,0.18);">
+        <div style="font-size:12px;font-weight:800;color:var(--accent);margin-bottom:8px;">3️⃣ وش الخطوة الجاية؟</div>
+        <p style="font-size:13.5px;line-height:1.8;margin:0;">نركز على الفيديو (ريلز) بنسبة ٨٠٪ من الميزانية، ونعيد تشغيل الإعلان اللي جاب ٢٩٧ متابع بميزانية أكبر.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">رحلة تكلفة المتابع</div>
+        <div class="chart-subtitle">كل ما نزل الخط، كان أحسن</div>
+      </div>
+    </div>
+    <div class="chart-body"><canvas id="chartJourneyOverview"></canvas></div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="quote" width="18" height="18"></i> الملخص التنفيذي</h3>
+    <p id="execSummaryText">—</p>
+  </div>
+</section>
+
+<!-- ===================== 2: BUDGET ===================== -->
+<section class="container" id="budget">
+  <h2 class="section-title"><i data-lucide="wallet" width="22" height="22"></i> فلوس الحملة كيف توزعت؟</h2>
+  <p class="section-subtitle">نوضح لك بالضبط وين راح كل ريال — الضريبة تنخصم من المبلغ، مو تنضاف عليه.</p>
+
+  <div class="grid-cards cols-4">
+    <div class="card tint-primary top-primary">
+      <div class="card-top">
+        <div class="card-label">المبلغ اللي دخل</div>
+        <div class="card-icon"><i data-lucide="banknote" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="budgetTotal" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note">المبلغ الكلي اللي دفعناه للحملة (شامل الضريبة).</div>
+    </div>
+    <div class="card tint-gold top-gold">
+      <div class="card-top">
+        <div class="card-label">ضريبة القيمة المضافة 15%</div>
+        <div class="card-icon gold"><i data-lucide="receipt" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="vatAmount" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note gold">تنخصم من الـ 4,000 — مو تنضاف عليها.</div>
+    </div>
+    <div class="card tint-accent top-accent">
+      <div class="card-top">
+        <div class="card-label">صافي الرصيد الإعلاني</div>
+        <div class="card-icon blue"><i data-lucide="wallet" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="netBudget" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note accent">الفلوس اللي راحت فعلاً للإعلانات.</div>
+    </div>
+    <div class="card tint-primary top-primary">
+      <div class="card-top">
+        <div class="card-label">اللي انصرف فعلاً</div>
+        <div class="card-icon"><i data-lucide="activity" width="16" height="16"></i></div>
+      </div>
+      <div class="card-value"><span data-bind="actualSpend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note success">صرفنا <span data-bind="utilization" data-format="pct"></span> من الرصيد.</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-container">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">وين راحت الـ 4,000؟</div>
+          <div class="chart-subtitle">توزيع المبلغ الكلي</div>
+        </div>
+      </div>
+      <div class="chart-body"><canvas id="chartBudgetDistribution"></canvas></div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">كم استغلينا من الرصيد؟</div>
+          <div class="chart-subtitle">نسبة الصرف من صافي الرصيد</div>
+        </div>
+      </div>
+      <div class="chart-body"><canvas id="chartUtilization"></canvas></div>
+    </div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="table" width="18" height="18"></i> الجدول بالتفصيل</h3>
+    <div class="table-wrap" style="margin:14px 0 0;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>البيان</th>
+            <th>المبلغ (ر.س)</th>
+            <th>النسبة من الكلي</th>
+            <th>ملاحظة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>المبلغ الكلي</strong></td>
+            <td class="num"><strong data-bind="budgetTotal" data-format="currency"></strong></td>
+            <td class="num">100.00%</td>
+            <td>اللي دخل من العميل</td>
+          </tr>
+          <tr>
+            <td>ضريبة القيمة المضافة</td>
+            <td class="num" data-bind="vatAmount" data-format="currency"></td>
+            <td class="num" data-bind="vatPct" data-format="pct"></td>
+            <td>تنخصم من الكلي</td>
+          </tr>
+          <tr>
+            <td><strong>صافي الرصيد الإعلاني</strong></td>
+            <td class="num"><strong data-bind="netBudget" data-format="currency"></strong></td>
+            <td class="num" data-bind="netPct" data-format="pct"></td>
+            <td>اللي راح للإعلانات</td>
+          </tr>
+          <tr>
+            <td>الإنفاق الفعلي</td>
+            <td class="num" data-bind="actualSpend" data-format="currency"></td>
+            <td class="num" data-bind="spendPctOfTotal" data-format="pct"></td>
+            <td>من المبلغ الكلي</td>
+          </tr>
+          <tr>
+            <td>الباقي</td>
+            <td class="num" data-bind="remaining" data-format="currency"></td>
+            <td class="num" data-bind="remainingPctOfTotal" data-format="pct"></td>
+            <td>رصيد إعلاني متبقٍ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:16px;padding:14px;background:rgba(217,164,65,0.16);border-radius:12px;font-size:13px;line-height:1.75;color:#6d4a0f;font-weight:500;border:1px solid rgba(217,164,65,0.30);">
+      <strong>💡 الحسبة ببساطة:</strong> الـ 4,000 ريال شاملة الضريبة. يعني صافي الرصيد = 4,000 ÷ 1.15 = 3,478.26 ر.س، وقيمة الضريبة = 4,000 − 3,478.26 = 521.74 ر.س. الرصيد هذا هو اللي راح فعلاً للإعلانات.
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 3: RESULTS ===================== -->
+<section class="container" id="results">
+  <h2 class="section-title"><i data-lucide="bar-chart-3" width="22" height="22"></i> النتايج بالأرقام</h2>
+  <p class="section-subtitle">كل مؤشر بمكانه — من الصرف إلى الكفاءة.</p>
+
+  <div class="metric-group">
+    <div class="metric-group-title"><i data-lucide="wallet" width="15" height="15"></i> كم صرفنا؟</div>
+    <div class="grid-cards cols-4">
+      <div class="card tint-accent">
+        <div class="card-label">الميزانية الكلية</div>
+        <div class="card-value"><span data-bind="budgetTotal" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">صافي الرصيد</div>
+        <div class="card-value"><span data-bind="netBudget" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+      <div class="card tint-gold">
+        <div class="card-label">الإنفاق الفعلي</div>
+        <div class="card-value"><span data-bind="actualSpend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">الباقي</div>
+        <div class="card-value"><span data-bind="remaining" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-group">
+    <div class="metric-group-title"><i data-lucide="radio" width="15" height="15"></i> كم وصلنا؟</div>
+    <div class="grid-cards cols-4">
+      <div class="card tint-primary top-primary">
+        <div class="card-label">الوصول <span class="info-icon" title="عدد الحسابات الفريدة اللي شافت الإعلان">?</span></div>
+        <div class="card-value"><span data-bind="reach" data-format="int"></span></div>
+        <div class="card-note">انتشار قوي مرة.</div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">مرات الظهور <span class="info-icon" title="عدد مرات عرض الإعلان ككل">?</span></div>
+        <div class="card-value"><span data-bind="impressions" data-format="int"></span></div>
+        <div class="card-note">عرض متكرر بدون إزعاج.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">معدل التكرار <span class="info-icon" title="مرات الظهور ÷ الوصول">?</span></div>
+        <div class="card-value"><span data-bind="frequency" data-format="ratio"></span></div>
+        <div class="card-note success">رقم صحي (المثالي بين 1 و 2).</div>
+      </div>
+      <div class="card tint-gold">
+        <div class="card-label">نسبة النقر CTR <span class="info-icon" title="النقرات ÷ مرات الظهور × 100">?</span></div>
+        <div class="card-value"><span data-bind="ctr" data-format="pct"></span></div>
+        <div class="card-note gold">أعلى من متوسط المنصات (1-2%).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-group">
+    <div class="metric-group-title"><i data-lucide="mouse-pointer-click" width="15" height="15"></i> كم تفاعلوا؟</div>
+    <div class="grid-cards cols-4">
+      <div class="card tint-accent">
+        <div class="card-label">النقرات <span class="info-icon" title="عدد النقرات على الإعلانات">?</span></div>
+        <div class="card-value"><span data-bind="clicks" data-format="int"></span></div>
+      </div>
+      <div class="card tint-primary top-primary">
+        <div class="card-label">زيارات الملف <span class="info-icon" title="كم واحد دخل صفحتنا">?</span></div>
+        <div class="card-value"><span data-bind="profileVisits" data-format="int"></span></div>
+        <div class="card-note">زيارات كثيرة مرة — أثر الانتشار.</div>
+      </div>
+      <div class="card tint-gold">
+        <div class="card-label">تكلفة الزيارة <span class="info-icon" title="الإنفاق ÷ الزيارات">?</span></div>
+        <div class="card-value"><span data-bind="costPerVisit" data-format="currencySmall"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note gold">شبه مجانية للزيارة الواحدة.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">تكلفة الألف ظهور CPM <span class="info-icon" title="الإنفاق ÷ مرات الظهور × 1000">?</span></div>
+        <div class="card-value"><span data-bind="cpm" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note accent">كفاءة عرض الإعلان.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-group">
+    <div class="metric-group-title"><i data-lucide="user-plus" width="15" height="15"></i> كم كسبنا متابعين؟</div>
+    <div class="grid-cards cols-4">
+      <div class="card tint-primary top-primary">
+        <div class="card-label">إجمالي النمو <span class="info-icon" title="كل المتابعين الجدد خلال الحملة">?</span></div>
+        <div class="card-value"><span data-bind="totalFollowers" data-format="int"></span></div>
+        <div class="card-note success">مدفوع + عضوي.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">متابعين الإعلان <span class="info-icon" title="اللي جوا من الإعلانات مباشرة">?</span></div>
+        <div class="card-value"><span data-bind="paidFollowers" data-format="int"></span></div>
+        <div class="card-note accent">جوا من النقر على الإعلان.</div>
+      </div>
+      <div class="card tint-gold top-gold">
+        <div class="card-label">نمو عضوي <span class="info-icon" title="جوا من غير ما يضغطون على الإعلان">?</span></div>
+        <div class="card-value"><span data-bind="organicFollowers" data-format="int"></span></div>
+        <div class="card-note gold">جوا لحالهم — دليل حيوية الحساب.</div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">نسبة النمو العضوي <span class="info-icon" title="العضوي ÷ الإجمالي × 100">?</span></div>
+        <div class="card-value"><span data-bind="organicPct" data-format="pct"></span></div>
+        <div class="card-note">حصة النمو غير الإعلاني.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-group">
+    <div class="metric-group-title"><i data-lucide="zap" width="15" height="15"></i> كفاءة الصرف</div>
+    <div class="grid-cards cols-4">
+      <div class="card tint-gold top-gold">
+        <div class="card-label">تكلفة المتابع المدفوع <span class="info-icon" title="الإنفاق ÷ متابعين الإعلان">?</span></div>
+        <div class="card-value"><span data-bind="costPerPaidFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note gold">اللي دفعناه لكل متابع من الإعلان.</div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">تكلفة المتابع الحقيقية <span class="info-icon" title="الإنفاق ÷ إجمالي النمو">?</span></div>
+        <div class="card-value"><span data-bind="costPerTotalFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note success">حتى مع العضوي — رقم ممتاز.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">تكلفة النقرة CPC <span class="info-icon" title="الإنفاق ÷ النقرات">?</span></div>
+        <div class="card-value"><span data-bind="cpc" data-format="currencySmall"></span> <span class="unit">ر.س</span></div>
+      </div>
+      <div class="card tint-gold">
+        <div class="card-label">تكلفة الألف ظهور CPM</div>
+        <div class="card-value"><span data-bind="cpm" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4: TESTING ===================== -->
+<section class="container" id="testing">
+  <h2 class="section-title"><i data-lucide="flask-conical" width="22" height="22"></i> المرحلة التجريبية</h2>
+  <p class="section-subtitle">أول مرحلة — ميزانية صغيرة، بس نتيجة قوية.</p>
+
+  <div class="grid-cards cols-4">
+    <div class="card tint-primary top-primary">
+      <div class="card-label">الإنفاق</div>
+      <div class="card-value"><span data-phase-bind="testing.spend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note">من أصل <strong data-phase-bind="testing.budget" data-format="currency"></strong> ر.س — استغلينا <strong data-phase-bind="testing.utilization" data-format="pct"></strong>.</div>
+    </div>
+    <div class="card tint-gold top-gold">
+      <div class="card-label">تكلفة المتابع <span class="info-icon" title="الإنفاق ÷ المتابعين">?</span></div>
+      <div class="card-value"><span data-phase-bind="testing.costPerFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note gold">🏆 الأرخص بين كل المراحل.</div>
+    </div>
+    <div class="card tint-accent">
+      <div class="card-label">المتابعين</div>
+      <div class="card-value"><span data-phase-bind="testing.followers" data-format="int"></span></div>
+      <div class="card-note accent">جابوهم بميزانية بسيطة.</div>
+    </div>
+    <div class="card tint-primary">
+      <div class="card-label">تكلفة الزيارة</div>
+      <div class="card-value"><span data-phase-bind="testing.costPerVisit" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note success">رخيصة مرة.</div>
+    </div>
+    <div class="card tint-accent">
+      <div class="card-label">الزيارات</div>
+      <div class="card-value"><span data-phase-bind="testing.visits" data-format="int"></span></div>
+    </div>
+    <div class="card tint-gold">
+      <div class="card-label">نسبة النقر CTR</div>
+      <div class="card-value"><span data-phase-bind="testing.ctr" data-format="pct"></span></div>
+      <div class="card-note gold">محتوى جذاب مرة.</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">مؤشرات المرحلة التجريبية</div>
+        <div class="chart-subtitle">الإنفاق، المتابعين، الزيارات، والتكاليف</div>
+      </div>
+      <div class="chart-body"><canvas id="chartTesting"></canvas></div>
+    </div>
+    <div class="analysis-box">
+      <h3><i data-lucide="lightbulb" width="18" height="18"></i> وش صار بالضبط؟</h3>
+      <p>هذي المرحلة كانت الأفضل من ناحية تكلفة المتابع (<strong>2.25 ر.س</strong>). إعلانات الفيديو (ريلز) تفوقت على الإعلانات الثابتة بمراحل في جلب التفاعل والزيارات.</p>
+      <p>الإعلان رقم 8 كان النجم — جاب 79 متابع، والإعلان رقم 3 جاب 73 متابع. من هنا عرفنا إن الفيديو هو اللي يمشي، وبنينا عليه استراتيجية التوسع.</p>
+      <div style="margin-top:14px;padding:12px;background:rgba(61,158,137,0.12);border-radius:10px;font-size:13px;font-weight:500;">
+        <strong>الدرس:</strong> الفيديو القصير يمشي أحسن من الصور، والاستهداف الأولي كان دقيق.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 5: SCALING ===================== -->
+<section class="container" id="scaling">
+  <h2 class="section-title"><i data-lucide="rocket" width="22" height="22"></i> مرحلة التوسع</h2>
+  <p class="section-subtitle">ثلاث مراحل — كل مرحلة تعلمنا شي جديد وحسّنا اللي بعدها.</p>
+
+  <div class="grid-cards cols-4">
+    <div class="card tint-primary top-primary">
+      <div class="card-label">إجمالي صرف التوسع</div>
+      <div class="card-value"><span data-phase-sum="spend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      <div class="card-note">يمثل <span data-scaling-share-of-spend="pct"></span> من الصرف الكلي.</div>
+    </div>
+    <div class="card tint-gold top-gold">
+      <div class="card-label">إجمالي متابعي التوسع</div>
+      <div class="card-value"><span data-phase-sum="followers" data-format="int"></span></div>
+      <div class="card-note gold">نمو متسارع.</div>
+    </div>
+    <div class="card tint-accent top-accent">
+      <div class="card-label">إجمالي الزيارات</div>
+      <div class="card-value"><span data-phase-sum="visits" data-format="int"></span></div>
+      <div class="card-note accent">زيارات كثيرة للملف.</div>
+    </div>
+  </div>
+
+  <div class="sub-tabs" role="tablist">
+    <button class="sub-tab-btn active" data-subtab="scale1" onclick="openSubTab('scale1', event)">Scale 01</button>
+    <button class="sub-tab-btn" data-subtab="scale2" onclick="openSubTab('scale2', event)">Scale 02</button>
+    <button class="sub-tab-btn" data-subtab="scale3" onclick="openSubTab('scale3', event)">Scale 03</button>
+  </div>
+
+  <div class="scale-section active" id="scale1">
+    <div class="grid-cards cols-4">
+      <div class="card tint-gold top-gold">
+        <div class="card-label">تكلفة المتابع</div>
+        <div class="card-value"><span data-phase-bind="scale1.costPerFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note gold">مرتفعة — الزيارات ما تحولت لمتابعة.</div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">تكلفة الزيارة</div>
+        <div class="card-value"><span data-phase-bind="scale1.costPerVisit" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note success">رخيصة مرة — الإعلان دفع الزيارات بكثافة.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">المتابعين</div>
+        <div class="card-value"><span data-phase-bind="scale1.followers" data-format="int"></span></div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">الإنفاق</div>
+        <div class="card-value"><span data-phase-bind="scale1.spend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note">أقل من الميزانية المخصصة (1,170 ر.س).</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">الزيارات</div>
+        <div class="card-value"><span data-phase-bind="scale1.visits" data-format="int"></span></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-container">
+        <div class="chart-title" style="margin-bottom:12px;">مؤشرات Scale 01</div>
+        <div class="chart-body"><canvas id="chartScale1"></canvas></div>
+      </div>
+      <div class="analysis-box">
+        <h3><i data-lucide="alert-triangle" width="18" height="18"></i> وش صار؟</h3>
+        <p>تكلفة الزيارة نزلت إلى <strong>0.14 ر.س</strong>، لكن تكلفة المتابع طلعت إلى <strong>13.51 ر.س</strong>. يعني الإعلان جاب زيارات كثيرة، بس الجمهور ما اقتنع يتابع.</p>
+        <p>السبب: توسعنا في جمهور واسع بدون فلترة كافية. الإعلان الأول (ريل) استحوذ على 85% من الميزانية وحقق أفضل النتائج رغم ارتفاع التكلفة.</p>
+        <div style="margin-top:12px;padding:12px;background:rgba(217,164,65,0.18);border-radius:10px;font-size:13px;font-weight:500;border:1px solid rgba(217,164,65,0.30);">
+          <strong>الدرس:</strong> التوسع العشوائي في جمهور واسع يجيب زيارات سطحية. لازم نراقب نسبة تحول الزيارة إلى متابعة.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scale-section" id="scale2">
+    <div class="grid-cards cols-4">
+      <div class="card tint-primary top-primary">
+        <div class="card-label">تكلفة المتابع</div>
+        <div class="card-value"><span data-phase-bind="scale2.costPerFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note success">↓ نزلت 37.7% عن Scale 01.</div>
+      </div>
+      <div class="card tint-gold">
+        <div class="card-label">المتابعين</div>
+        <div class="card-value"><span data-phase-bind="scale2.followers" data-format="int"></span></div>
+        <div class="card-note gold">+86% عن Scale 01.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">الزيارات</div>
+        <div class="card-value"><span data-phase-bind="scale2.visits" data-format="int"></span></div>
+      </div>
+      <div class="card tint-gold top-gold">
+        <div class="card-label">CPM <span class="info-icon" title="تكلفة الألف ظهور">?</span></div>
+        <div class="card-value"><span data-phase-bind="scale2.cpm" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note gold">ارتفاع يدل على منافسة أعلى.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">الإنفاق</div>
+        <div class="card-value"><span data-phase-bind="scale2.spend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-container">
+        <div class="chart-title" style="margin-bottom:12px;">مؤشرات Scale 02</div>
+        <div class="chart-body"><canvas id="chartScale2"></canvas></div>
+      </div>
+      <div class="analysis-box">
+        <h3><i data-lucide="trending-down" width="18" height="18"></i> وش صار؟</h3>
+        <p>تحسن واضح — تكلفة المتابع نزلت إلى <strong>8.42 ر.س</strong>، وعدد المتابعين زاد 86%. الإعلان الأول كان الأفضل بجلب 46 متابع.</p>
+        <p>بس ارتفعت تكلفة الألف ظهور (CPM) إلى <strong>7.59 ر.س</strong>، يعني دخلنا في منافسة أعلى على نفس الجمهور.</p>
+        <div style="margin-top:12px;padding:12px;background:rgba(61,158,137,0.12);border-radius:10px;font-size:13px;font-weight:500;">
+          <strong>الدرس:</strong> تعديلات الاستهداف بدأت تؤتي ثمارها. نكمل تحسين الجماهير.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scale-section" id="scale3">
+    <div class="grid-cards cols-4">
+      <div class="card tint-gold top-gold">
+        <div class="card-label">تكلفة المتابع 🏆</div>
+        <div class="card-value"><span data-phase-bind="scale3.costPerFollower" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note gold">↓ نزلت 54.6% عن Scale 02.</div>
+      </div>
+      <div class="card tint-primary top-primary">
+        <div class="card-label">المتابعين</div>
+        <div class="card-value"><span data-phase-bind="scale3.followers" data-format="int"></span></div>
+        <div class="card-note success">الميزانية الأكبر في الإعلان الأنجح أعطت أفضل نتيجة.</div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">CPM</div>
+        <div class="card-value"><span data-phase-bind="scale3.cpm" data-format="currency"></span> <span class="unit">ر.س</span></div>
+        <div class="card-note accent">الأفضل بين كل مراحل التوسع.</div>
+      </div>
+      <div class="card tint-primary">
+        <div class="card-label">الزيارات</div>
+        <div class="card-value"><span data-phase-bind="scale3.visits" data-format="int"></span></div>
+      </div>
+      <div class="card tint-accent">
+        <div class="card-label">الإنفاق</div>
+        <div class="card-value"><span data-phase-bind="scale3.spend" data-format="currency"></span> <span class="unit">ر.س</span></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-container">
+        <div class="chart-title" style="margin-bottom:12px;">مؤشرات Scale 03</div>
+        <div class="chart-body"><canvas id="chartScale3"></canvas></div>
+      </div>
+      <div class="analysis-box">
+        <h3><i data-lucide="award" width="18" height="18"></i> المرحلة الأنجح</h3>
+        <p>تكلفة المتابع نزلت إلى <strong>3.82 ر.س</strong>، وأفضل CPM بين كل المراحل (<strong>4.04 ر.س</strong>).</p>
+        <p>الإعلان الثاني (المدمج) جاب 297 متابع لحاله. هذا يأكد إن <strong>ضخ ميزانية أكبر في إعلان واحد ناجح</strong> يجيب نتيجة أحسن من توزيعها على كم إعلان.</p>
+        <div style="margin-top:12px;padding:12px;background:rgba(46,139,87,0.14);border-radius:10px;font-size:13px;font-weight:500;border:1px solid rgba(46,139,87,0.25);">
+          <strong>الاستراتيجية المؤكدة:</strong> نعيد تشغيل الإعلان الناجح بميزانية أكبر — هذي الخطوة الجاية.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6: COMPARISON ===================== -->
+<section class="container" id="comparison">
+  <h2 class="section-title"><i data-lucide="git-compare" width="22" height="22"></i> كيف تطورت الحملة؟</h2>
+  <p class="section-subtitle">من التجريب إلى التوسع — قصة تحسّن تدريجي.</p>
+
+  <div class="chart-container">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">رحلة تكلفة المتابع</div>
+        <div class="chart-subtitle">التجريب → Scale 01 → Scale 02 → Scale 03</div>
+      </div>
+    </div>
+    <div class="chart-body tall"><canvas id="chartJourney"></canvas></div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="move-right" width="18" height="18"></i> وش صار بين كل مرحلة؟</h3>
+    <div id="transitionsBlock" style="display:grid;gap:12px;"></div>
+  </div>
+
+  <h2 class="section-title" style="margin-top:10px;"><i data-lucide="table" width="22" height="22"></i> جدول المقارنة</h2>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>المرحلة</th>
+          <th>الإنفاق (ر.س)</th>
+          <th>المتابعين</th>
+          <th>تكلفة المتابع (ر.س)</th>
+          <th>الزيارات</th>
+          <th>تكلفة الزيارة (ر.س)</th>
+          <th>CPM (ر.س)</th>
+        </tr>
+      </thead>
+      <tbody id="comparisonTableBody"></tbody>
+      <tfoot id="comparisonTableFoot"></tfoot>
+    </table>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">المتابعين في كل مرحلة</div>
+      </div>
+      <div class="chart-body"><canvas id="chartFollowersCompare"></canvas></div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">الإنفاق في كل مرحلة</div>
+      </div>
+      <div class="chart-body"><canvas id="chartSpendCompare"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">الزيارات في كل مرحلة</div>
+      </div>
+      <div class="chart-body"><canvas id="chartVisitsCompare"></canvas></div>
+    </div>
+    <div class="chart-container">
+      <div class="chart-header">
+        <div class="chart-title">تكلفة المتابع في كل مرحلة</div>
+        <div class="chart-subtitle">الأقل = الأفضل</div>
+      </div>
+      <div class="chart-body"><canvas id="chartCPFCompare"></canvas></div>
+    </div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="trophy" width="18" height="18"></i> أفضل وأصعب مرحلة</h3>
+    <div class="grid-cards cols-2" style="margin-top:14px;">
+      <div class="card tint-primary top-primary">
+        <div class="card-label"><span class="badge badge-success">الأفضل</span></div>
+        <h4 style="color:var(--success);font-size:16px;margin:8px 0;" id="bestPhaseTitle">—</h4>
+        <p style="font-size:13.5px;line-height:1.75;color:#374151;font-weight:500;" id="bestPhaseText">—</p>
+      </div>
+      <div class="card tint-gold top-gold">
+        <div class="card-label"><span class="badge badge-warn">الأصعب</span></div>
+        <h4 style="color:var(--danger);font-size:16px;margin:8px 0;" id="worstPhaseTitle">—</h4>
+        <p style="font-size:13.5px;line-height:1.75;color:#374151;font-weight:500;" id="worstPhaseText">—</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="shield-check" width="18" height="18"></i> تحققنا من الأرقام</h3>
+    <div id="verifyList"></div>
+  </div>
+</section>
+
+<!-- ===================== 7: RECOMMENDATIONS ===================== -->
+<section class="container" id="recommendations">
+  <h2 class="section-title"><i data-lucide="target" width="22" height="22"></i> وش بعدين؟</h2>
+  <p class="section-subtitle">القرارات اللي ننصح فيها بناءً على النتايج.</p>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="globe" width="18" height="18"></i> وش تعني هالنتايج للشركة؟</h3>
+    <div class="grid-cards cols-2" style="margin-top:14px;">
+      <div class="card tint-primary">
+        <h4 style="color:var(--accent);font-size:14px;margin-bottom:8px;">1. نمو الجمهور</h4>
+        <p style="font-size:13.5px;line-height:1.75;font-weight:500;">اكتسبنا <strong data-bind="totalFollowers" data-format="int"></strong> متابع جديد، 39% منهم من الإعلان و61% جوا لحالهم. النمو العضوي دليل على حيوية الحساب.</p>
+      </div>
+      <div class="card tint-accent">
+        <h4 style="color:var(--accent);font-size:14px;margin-bottom:8px;">2. كفاءة الصرف</h4>
+        <p style="font-size:13.5px;line-height:1.75;font-weight:500;">استغلينا <strong data-bind="utilization" data-format="pct"></strong> من الرصيد، وباقي <strong data-bind="remaining" data-format="currency"></strong> ر.س بس — كفاءة شبه كاملة.</p>
+      </div>
+      <div class="card tint-gold">
+        <h4 style="color:var(--accent);font-size:14px;margin-bottom:8px;">3. المحتوى الأنجح</h4>
+        <p style="font-size:13.5px;line-height:1.75;font-weight:500;">إعلانات الفيديو (ريلز) تفوقت بوضوح. الإعلان اللي جاب 297 متابع في Scale 03 هو الفرصة الأكبر للتكرار.</p>
+      </div>
+      <div class="card tint-primary">
+        <h4 style="color:var(--accent);font-size:14px;margin-bottom:8px;">4. الفرص الجاية</h4>
+        <p style="font-size:13.5px;line-height:1.75;font-weight:500;">نعيد اختبار الإعلان الناجح بميزانية أكبر، ونوسع الاستهداف بناءً على الجماهير اللي تفاعلت، ونضبط التكرار قبل التشبع.</p>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:rgba(217,164,65,0.16);border-radius:12px;font-size:13px;line-height:1.75;color:#6d4a0f;font-weight:500;border:1px solid rgba(217,164,65,0.30);">
+      <strong>ملاحظة مهمة:</strong> ما عندنا بيانات مبيعات أو تحويلات تجارية (Purchases / Leads) في التقرير. لذلك ما نقدر نجزم إن هالنتايج جابت أرباح. لازم نربط الحملة بـ Pixel تحويلات وبيانات CRM عشان نقيس الأثر التجاري كامل.
+    </div>
+  </div>
+
+  <h2 class="section-title" style="margin-top:20px;"><i data-lucide="list-checks" width="22" height="22"></i> خطة العمل</h2>
+
+  <div class="rec-grid">
+    <div class="rec-card priority-low">
+      <div class="rec-head">
+        <div class="rec-title">✅ نكمل في الفيديو (ريلز)</div>
+        <span class="badge badge-success">أولوية عالية</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نحط 80% من الميزانية الجاية لإعلانات الفيديو.</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> تفوقت على المنشورات الثابتة في جلب الزيارات والمتابعة.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> تكلفة المتابع 4 ر.س أو أقل.</div>
+      </div>
+    </div>
+    <div class="rec-card priority-low">
+      <div class="rec-head">
+        <div class="rec-title">✅ نعيد تشغيل الإعلان الناجح</div>
+        <span class="badge badge-success">أولوية عالية</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نعيد الإعلان اللي جاب 297 متابع بميزانية أكبر.</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> أثبت كفاءة عالية (3.82 ر.س/متابع) وأفضل CPM.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> نحافظ على تكلفة المتابع قريبة من 3.82 ر.س.</div>
+      </div>
+    </div>
+    <div class="rec-card priority-med">
+      <div class="rec-head">
+        <div class="rec-title">🔧 نحسن تحويل الزيارات</div>
+        <span class="badge badge-warn">أولوية متوسطة</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نراجع الإعلانات اللي تجيب زيارات كثيرة بدون متابعة (Scale 01 نموذج).</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> تكلفة الزيارة 0.14 ريال مع تكلفة متابع 13.51 ريال = فجوة تحويل.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> نرفع نسبة الزيارات اللي تنتهي بمتابعة.</div>
+      </div>
+    </div>
+    <div class="rec-card priority-med">
+      <div class="rec-head">
+        <div class="rec-title">🔧 نوسع الجماهير المتشابهة</div>
+        <span class="badge badge-warn">أولوية متوسطة</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نبني Lookalike Audience من المتابعين الجدد والمتفاعلين.</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> الجمهور العضوي نما بنسبة عالية — أفضل مصدر لبناء Lookalike.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> CPM منخفض مع CTR أعلى من 2.5%.</div>
+      </div>
+    </div>
+    <div class="rec-card priority-med">
+      <div class="rec-head">
+        <div class="rec-title">🔧 نضبط معدل التكرار</div>
+        <span class="badge badge-warn">أولوية متوسطة</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نراقب Frequency وما نتجاوز 2.0.</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> المعدل الحالي 1.73 — قريب من التشبع.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> ما يزيد عن 2.0 مع الحفاظ على CTR.</div>
+      </div>
+    </div>
+    <div class="rec-card priority-high">
+      <div class="rec-head">
+        <div class="rec-title">🧪 نجرب صيغ جديدة</div>
+        <span class="badge badge-info">اختبار</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نختبر 2-3 صيغ فيديو جديدة (قصة، شهادة عميل، عرض).</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> الاعتماد على صيغة واحدة قد يسبب إجهاد الجمهور.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> نلقى صيغة بتكلفة متابع أقل من 4 ر.س.</div>
+      </div>
+    </div>
+    <div class="rec-card priority-high">
+      <div class="rec-head">
+        <div class="rec-title">📊 نقيس الأثر التجاري</div>
+        <span class="badge badge-danger">أولوية قصوى</span>
+      </div>
+      <div class="rec-body">
+        <div class="rec-row"><span class="lbl">وش نسوي:</span> نثبت Meta Pixel مع أحداث تحويل، ونربط الحملة بـ CRM.</div>
+        <div class="rec-row"><span class="lbl">ليش:</span> البيانات الحالية ما تقيس المبيعات أو العملاء المحتملين.</div>
+        <div class="rec-row"><span class="lbl">مؤشر النجاح:</span> تقرير ROAS / CPL في الحملة الجاية.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="analysis-box">
+    <h3><i data-lucide="eye" width="18" height="18"></i> وش نراقب عن كثب</h3>
+    <ul>
+      <li><strong>تكلفة المتابع:</strong> نبغاها تنزل لـ 4 ر.س أو أقل (هدف مقترح، مو مضمون).</li>
+      <li><strong>تكلفة الزيارة:</strong> نراقب إذا الزيارات تتحول لمتابعة.</li>
+      <li><strong>معدل التحويل من زيارة إلى متابعة:</strong> مؤشر مهم ما يتوفر حالياً بشكل مباشر.</li>
+      <li><strong>معدل التكرار:</strong> ما نتجاوز 2.0.</li>
+      <li><strong>CPM:</strong> إذا ارتفع فوق 8 ر.س فقد يشير إلى تشبع الجمهور.</li>
+      <li><strong>جودة المتابعين الجدد:</strong> هل يتفاعلون مع المحتوى العضوي لاحقاً؟</li>
+    </ul>
+    <div style="margin-top:12px;padding:12px;background:rgba(33,28,85,0.08);border-radius:10px;font-size:13px;color:var(--accent);font-weight:500;border:1px solid rgba(33,28,85,0.15);">
+      <strong>تنبيه:</strong> كل الأهداف الرقمية المذكورة أعلاه هي <strong>أهداف مقترحة</strong> بناءً على الأداء السابق، مو نتايج مضمونة.
+    </div>
+  </div>
+
+  <div class="final-note">
+    <h3>🌟 الخلاصة الأهم</h3>
+    <p>الحملة الإعلانية أدت لاكتساب الحساب دفعة قوية في معدل الوصول والريتش العضوي، وهذا يخلي الصفحة تظهر بشكل أكثر حيوية ويساعدنا على اكتساب متابعين بشكل عضوي فيما بعد.</p>
+  </div>
+</section>
+
+<script>
+const STATE = {
+  budget: { total: 4000, taxRate: 0.15, actualSpend: 3475.96 },
+  overall: {
+    reach: 369000,
+    impressions: 638000,
+    clicks: 17000,
+    profileVisits: 207000,
+    totalFollowers: 1360,
+    paidFollowers: 826
+  },
+  phases: {
+    testing: { name: 'Testing', nameAr: 'المرحلة التجريبية', spend: 845.54, budget: 896, followers: 376, visits: 3850, ctr: 2.83, cpm: null },
+    scale1: { name: 'Scale 01', nameAr: 'التوسع الأول', spend: 675.62, budget: 1170, followers: 50, visits: 4613, ctr: null, cpm: null },
+    scale2: { name: 'Scale 02', nameAr: 'التوسع الثاني', spend: 783.39, budget: null, followers: 93, visits: 3209, ctr: null, cpm: 7.59 },
+    scale3: { name: 'Scale 03', nameAr: 'التوسع الثالث', spend: 1171.41, budget: null, followers: 307, visits: 3993, ctr: null, cpm: 4.04 }
+  },
+  texts: {
+    execSummary: 'الحملة الإعلانية وصلت لأكثر من 369 ألف حساب فريد، وحساب الشركة استقبل أكثر من 207 ألف زيارة. أهم شي: مو بس الإعلانات اللي جابت متابعين — في 534 متابع جدد جوا من غير ما يضغطون على الإعلان، وهذا يعكس حيوية الحساب وجاذبيته. صرفنا 3,475.96 ريال من أصل 3,478.26 ريال صافي، يعني استغلينا 99.93% من الرصيد الإعلاني، والتكلفة الحقيقية للمتابع طلعت 2.56 ريال بس.'
+  }
+};
+
+function fmt(n, d) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+function applyFormat(v, f) {
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  switch (f) {
+    case 'currency': return fmt(v, 2);
+    case 'currencySmall': return fmt(v, 3);
+    case 'int': return fmt(v, 0);
+    case 'pct': return Number(v).toFixed(2) + '%';
+    case 'ratio': return Number(v).toFixed(2);
+    default: return v;
+  }
+}
+
+function computeAll() {
+  const b = STATE.budget, o = STATE.overall;
+  const netBudget = b.total / (1 + b.taxRate);
+  const vatAmount = b.total - netBudget;
+  const remaining = netBudget - b.actualSpend;
+  const utilization = netBudget > 0 ? (b.actualSpend / netBudget) * 100 : 0;
+  const vatPct = b.total > 0 ? (vatAmount / b.total) * 100 : 0;
+  const netPct = b.total > 0 ? (netBudget / b.total) * 100 : 0;
+  const spendPctOfTotal = b.total > 0 ? (b.actualSpend / b.total) * 100 : 0;
+  const remainingPctOfTotal = b.total > 0 ? (remaining / b.total) * 100 : 0;
+  const organicFollowers = o.totalFollowers - o.paidFollowers;
+  const organicPct = o.totalFollowers > 0 ? (organicFollowers / o.totalFollowers) * 100 : 0;
+  const frequency = o.reach > 0 ? o.impressions / o.reach : 0;
+  const ctr = o.impressions > 0 ? (o.clicks / o.impressions) * 100 : 0;
+  const costPerPaidFollower = o.paidFollowers > 0 ? b.actualSpend / o.paidFollowers : 0;
+  const costPerTotalFollower = o.totalFollowers > 0 ? b.actualSpend / o.totalFollowers : 0;
+  const costPerVisit = o.profileVisits > 0 ? b.actualSpend / o.profileVisits : 0;
+  const cpm = o.impressions > 0 ? (b.actualSpend / o.impressions) * 1000 : 0;
+  const cpc = o.clicks > 0 ? b.actualSpend / o.clicks : 0;
+  const phases = {};
+  for (const [key, p] of Object.entries(STATE.phases)) {
+    phases[key] = {
+      ...p, key,
+      costPerFollower: p.followers > 0 ? p.spend / p.followers : 0,
+      costPerVisit: p.visits > 0 ? p.spend / p.visits : 0
+    };
+  }
+  const sumSpend = Object.values(phases).reduce((s, p) => s + p.spend, 0);
+  const sumFollowers = Object.values(phases).reduce((s, p) => s + p.followers, 0);
+  const sumVisits = Object.values(phases).reduce((s, p) => s + p.visits, 0);
+  return {
+    netBudget, vatAmount, remaining, utilization, vatPct, netPct,
+    spendPctOfTotal, remainingPctOfTotal, organicFollowers, organicPct,
+    frequency, ctr, costPerPaidFollower, costPerTotalFollower, costPerVisit,
+    cpm, cpc, phases, sumSpend, sumFollowers, sumVisits
+  };
+}
+
+function renderBindings() {
+  const m = computeAll();
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    const key = el.dataset.bind;
+    const format = el.dataset.format || 'int';
+    let val;
+    switch (key) {
+      case 'budgetTotal': val = STATE.budget.total; break;
+      case 'netBudget': val = m.netBudget; break;
+      case 'vatAmount': val = m.vatAmount; break;
+      case 'actualSpend': val = STATE.budget.actualSpend; break;
+      case 'remaining': val = m.remaining; break;
+      case 'utilization': val = m.utilization; break;
+      case 'vatPct': val = m.vatPct; break;
+      case 'netPct': val = m.netPct; break;
+      case 'spendPctOfTotal': val = m.spendPctOfTotal; break;
+      case 'remainingPctOfTotal': val = m.remainingPctOfTotal; break;
+      case 'reach': val = STATE.overall.reach; break;
+      case 'impressions': val = STATE.overall.impressions; break;
+      case 'clicks': val = STATE.overall.clicks; break;
+      case 'profileVisits': val = STATE.overall.profileVisits; break;
+      case 'totalFollowers': val = STATE.overall.totalFollowers; break;
+      case 'paidFollowers': val = STATE.overall.paidFollowers; break;
+      case 'organicFollowers': val = m.organicFollowers; break;
+      case 'organicPct': val = m.organicPct; break;
+      case 'frequency': val = m.frequency; break;
+      case 'ctr': val = m.ctr; break;
+      case 'costPerPaidFollower': val = m.costPerPaidFollower; break;
+      case 'costPerTotalFollower': val = m.costPerTotalFollower; break;
+      case 'costPerVisit': val = m.costPerVisit; break;
+      case 'cpm': val = m.cpm; break;
+      case 'cpc': val = m.cpc; break;
+      default: return;
+    }
+    el.textContent = applyFormat(val, format);
+  });
+  document.querySelectorAll('[data-phase-bind]').forEach(el => {
+    const [ph, prop] = el.dataset.phaseBind.split('.');
+    const format = el.dataset.format || 'currency';
+    const p = m.phases[ph];
+    if (!p) return;
+    let val;
+    switch (prop) {
+      case 'spend': val = p.spend; break;
+      case 'budget': val = p.budget; break;
+      case 'followers': val = p.followers; break;
+      case 'visits': val = p.visits; break;
+      case 'ctr': val = p.ctr; break;
+      case 'cpm': val = p.cpm; break;
+      case 'costPerFollower': val = p.costPerFollower; break;
+      case 'costPerVisit': val = p.costPerVisit; break;
+      case 'utilization': val = p.budget ? (p.spend / p.budget) * 100 : null; break;
+      default: return;
+    }
+    el.textContent = applyFormat(val, format);
+  });
+  document.querySelectorAll('[data-phase-sum]').forEach(el => {
+    const key = el.dataset.phaseSum;
+    const format = el.dataset.format || 'int';
+    let val;
+    if (key === 'spend') val = m.sumSpend;
+    else if (key === 'followers') val = m.sumFollowers;
+    else if (key === 'visits') val = m.sumVisits;
+    else return;
+    el.textContent = applyFormat(val, format);
+  });
+  document.querySelectorAll('[data-scaling-share-of-spend]').forEach(el => {
+    const scalingSpend = m.phases.scale1.spend + m.phases.scale2.spend + m.phases.scale3.spend;
+    const share = STATE.budget.actualSpend > 0 ? (scalingSpend / STATE.budget.actualSpend) * 100 : 0;
+    el.textContent = Number(share).toFixed(2) + '%';
+  });
+  const execEl = document.getElementById('execSummaryText');
+  if (execEl) execEl.textContent = STATE.texts.execSummary;
+  renderComparisonTable(m);
+  renderTransitions(m);
+  renderBestWorst(m);
+  renderVerification(m);
+}
+
+function renderComparisonTable(m) {
+  const tbody = document.getElementById('comparisonTableBody');
+  const tfoot = document.getElementById('comparisonTableFoot');
+  if (!tbody) return;
+  const phaseList = [
+    { key: 'testing', label: 'Testing', sub: 'التجريب' },
+    { key: 'scale1', label: 'Scale 01', sub: 'التوسع الأول' },
+    { key: 'scale2', label: 'Scale 02', sub: 'التوسع الثاني' },
+    { key: 'scale3', label: 'Scale 03', sub: 'التوسع الثالث' }
+  ];
+  const cpfs = phaseList.map(p => m.phases[p.key].costPerFollower);
+  const minCpf = Math.min(...cpfs);
+  const maxCpf = Math.max(...cpfs);
+  tbody.innerHTML = phaseList.map(p => {
+    const ph = m.phases[p.key];
+    const cpfClass = ph.costPerFollower === minCpf ? 'best' : (ph.costPerFollower === maxCpf ? 'worst' : '');
+    return `<tr>
+      <td><strong>${p.label}</strong><br><span style="font-size:11px;color:var(--text-muted);">${p.sub}</span></td>
+      <td class="num">${fmt(ph.spend, 2)}</td>
+      <td class="num">${fmt(ph.followers, 0)}</td>
+      <td class="num ${cpfClass}">${fmt(ph.costPerFollower, 2)}</td>
+      <td class="num">${fmt(ph.visits, 0)}</td>
+      <td class="num">${fmt(ph.costPerVisit, 2)}</td>
+      <td class="num">${ph.cpm ? fmt(ph.cpm, 2) : '—'}</td>
+    </tr>`;
+  }).join('');
+  tfoot.innerHTML = `<tr>
+    <td>المجموع / المتوسط</td>
+    <td class="num">${fmt(m.sumSpend, 2)}</td>
+    <td class="num">${fmt(m.sumFollowers, 0)}</td>
+    <td class="num">${fmt(m.sumFollowers > 0 ? m.sumSpend / m.sumFollowers : 0, 2)}</td>
+    <td class="num">${fmt(m.sumVisits, 0)}</td>
+    <td class="num">${fmt(m.sumVisits > 0 ? m.sumSpend / m.sumVisits : 0, 2)}</td>
+    <td class="num">—</td>
+  </tr>`;
+}
+
+function renderTransitions(m) {
+  const block = document.getElementById('transitionsBlock');
+  if (!block) return;
+  const pairs = [
+    { from: 'testing', to: 'scale1', note: 'التوسع الأول رفع التكلفة بشكل حاد، لأن الزيارات ما تحولت لمتابعات بالكفاءة اللي توقعناها. هذا درس مهم.' },
+    { from: 'scale1', to: 'scale2', note: 'بعد ما ضبطنا الاستهداف ووزعنا الميزانية على الإعلانات الأنجح، التكلفة نزلت بشكل واضح.' },
+    { from: 'scale2', to: 'scale3', note: 'حطينا الميزانية الأكبر في إعلان واحد ناجح، والنتيجة كانت أفضل — هذا أهم درس في الحملة.' }
+  ];
+  block.innerHTML = pairs.map(({ from, to, note }) => {
+    const a = m.phases[from], b = m.phases[to];
+    const change = a.costPerFollower > 0 ? ((b.costPerFollower - a.costPerFollower) / a.costPerFollower) * 100 : 0;
+    const good = change < 0;
+    const color = good ? 'var(--success)' : 'var(--danger)';
+    const bg = good ? 'rgba(46,139,87,0.12)' : 'rgba(184,58,58,0.10)';
+    const border = good ? 'rgba(46,139,87,0.25)' : 'rgba(184,58,58,0.20)';
+    const arrow = good ? '↓' : '↑';
+    return `<div style="display:flex;gap:14px;padding:14px;background:${bg};border:1px solid ${border};border-radius:12px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="font-size:22px;font-weight:800;color:${color};min-width:80px;">${arrow} ${Math.abs(change).toFixed(1)}%</div>
+      <div style="flex:1;min-width:200px;">
+        <div style="font-weight:800;color:var(--accent);margin-bottom:4px;">${a.name} → ${b.name}</div>
+        <div style="font-size:13px;color:#374151;line-height:1.7;font-weight:500;">تكلفة المتابع تغيرت من <strong>${fmt(a.costPerFollower, 2)} ر.س</strong> إلى <strong>${fmt(b.costPerFollower, 2)} ر.س</strong>. ${note}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderBestWorst(m) {
+  const all = ['testing', 'scale1', 'scale2', 'scale3'].map(k => m.phases[k]);
+  const scalingOnly = all.filter(p => p.key !== 'testing');
+  const bestScaling = scalingOnly.reduce((a, b) => a.costPerFollower < b.costPerFollower ? a : b);
+  const worstPhase = all.reduce((a, b) => a.costPerFollower > b.costPerFollower ? a : b);
+  document.getElementById('bestPhaseTitle').textContent = `${bestScaling.name} — ${bestScaling.nameAr}`;
+  document.getElementById('bestPhaseText').innerHTML = `
+    <strong>تكلفة المتابع: ${fmt(bestScaling.costPerFollower, 2)} ر.س</strong> — أفضل كفاءة في مراحل التوسع.
+    ${bestScaling.cpm ? `CPM: ${fmt(bestScaling.cpm, 2)} ر.س.` : ''}
+    إجمالي المتابعين: ${fmt(bestScaling.followers, 0)}.
+    السبب: ركزنا الميزانية في إعلان أثبت أداءً جيد بدل ما نوزعها.`;
+  document.getElementById('worstPhaseTitle').textContent = `${worstPhase.name} — ${worstPhase.nameAr}`;
+  document.getElementById('worstPhaseText').innerHTML = `
+    <strong>تكلفة المتابع: ${fmt(worstPhase.costPerFollower, 2)} ر.س</strong> — أعلى تكلفة بين كل المراحل.
+    ${worstPhase.visits > 0 ? `تكلفة الزيارة: ${fmt(worstPhase.costPerVisit, 2)} ر.س (زيارات كثيرة بس مو مؤهلة للمتابعة).` : ''}
+    السبب: جمهور واسع بدون فلترة، وتوزيع الميزانية على أكثر من إعلان.`;
+}
+
+function renderVerification(m) {
+  const block = document.getElementById('verifyList');
+  if (!block) return;
+  const items = [
+    { title: 'مجموع صرف المراحل = الإنفاق الفعلي', body: `مجموع صرف المراحل الأربع = <strong>${fmt(m.sumSpend, 2)} ر.س</strong>، والإنفاق الفعلي الإجمالي = <strong>${fmt(STATE.budget.actualSpend, 2)} ر.س</strong>. متطابق تماماً.` },
+    { title: 'مجموع متابعي المراحل = المتابعين المدفوعين', body: `مجموع متابعي المراحل = <strong>${fmt(m.sumFollowers, 0)}</strong>، والمتابعون المنسوبون للإعلانات = <strong>${fmt(STATE.overall.paidFollowers, 0)}</strong>. متطابق.` },
+    { title: 'النمو العضوي = الفرق بين الإجمالي والمدفوع', body: `إجمالي النمو = <strong>${fmt(STATE.overall.totalFollowers, 0)}</strong>، المدفوع = <strong>${fmt(STATE.overall.paidFollowers, 0)}</strong>، الفرق = <strong>${fmt(m.organicFollowers, 0)}</strong> متابع جوا من غير نقر مباشر على الإعلان.` },
+    { title: 'صافي الرصيد والضريبة', body: `صافي الرصيد = 4,000 ÷ 1.15 = <strong>${fmt(m.netBudget, 2)} ر.س</strong>، وقيمة الضريبة = <strong>${fmt(m.vatAmount, 2)} ر.س</strong>. الرصيد المتبقي = <strong>${fmt(m.remaining, 2)} ر.س</strong>.` },
+    { title: 'نسبة استغلال الرصيد الإعلاني', body: `الإنفاق الفعلي ÷ صافي الرصيد × 100 = <strong>${m.utilization.toFixed(2)}%</strong>. يعني فلوسنا كلها تقريباً راحت للإعلانات.` },
+    { title: 'معدل التكرار و CTR', body: `معدل التكرار = ${fmt(STATE.overall.impressions, 0)} ÷ ${fmt(STATE.overall.reach, 0)} = <strong>${m.frequency.toFixed(2)}</strong>. نسبة النقر = ${fmt(STATE.overall.clicks, 0)} ÷ ${fmt(STATE.overall.impressions, 0)} × 100 = <strong>${m.ctr.toFixed(2)}%</strong>.` }
+  ];
+  block.innerHTML = items.map(it => `
+    <div class="verify-item">
+      <div class="verify-icon">✓</div>
+      <div class="verify-content"><strong>${it.title}</strong><br>${it.body}</div>
+    </div>`).join('');
+}
+
+const CHART_COLORS = {
+  primary: '#3D9E89',
+  accent: '#211C55',
+  gold: '#D9A441',
+  success: '#2e8b57'
+};
+
+const commonOptions = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { display: true, position: 'top', labels: { font: { family: 'IBM Plex Sans Arabic', size: 12, weight: '600' }, color: '#374151', padding: 14, usePointStyle: true } },
+    tooltip: { titleFont: { family: 'IBM Plex Sans Arabic', size: 13, weight: '700' }, bodyFont: { family: 'IBM Plex Sans Arabic', size: 12 }, backgroundColor: '#211C55', padding: 10, cornerRadius: 8 }
+  },
+  scales: {
+    x: { ticks: { font: { family: 'IBM Plex Sans Arabic', size: 11, weight: '600' }, color: '#6b7280' }, grid: { display: false } },
+    y: { ticks: { font: { family: 'IBM Plex Sans Arabic', size: 11, weight: '600' }, color: '#6b7280' }, grid: { color: 'rgba(0,0,0,0.05)' }, beginAtZero: true }
+  }
+};
+
+const CHARTS = {};
+function destroyChart(id) { if (CHARTS[id]) { try { CHARTS[id].destroy(); } catch (e) {} delete CHARTS[id]; } }
+function createChart(id, config) {
+  destroyChart(id);
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  try { CHARTS[id] = new Chart(canvas, config); } catch (e) { console.error('Chart error ' + id, e); }
+}
+
+function renderJourneyOverview(m) {
+  const keys = ['testing', 'scale1', 'scale2', 'scale3'];
+  createChart('chartJourneyOverview', {
+    type: 'line',
+    data: {
+      labels: ['Testing', 'Scale 01', 'Scale 02', 'Scale 03'],
+      datasets: [{
+        label: 'تكلفة المتابع (ر.س)',
+        data: keys.map(k => m.phases[k].costPerFollower),
+        borderColor: CHART_COLORS.primary, backgroundColor: 'rgba(61,158,137,0.15)',
+        borderWidth: 3, pointRadius: 7, pointBackgroundColor: CHART_COLORS.primary,
+        pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, fill: true
+      }]
+    },
+    options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: false } } }
+  });
+}
+
+function renderJourney(m) {
+  const keys = ['testing', 'scale1', 'scale2', 'scale3'];
+  createChart('chartJourney', {
+    type: 'line',
+    data: {
+      labels: ['Testing', 'Scale 01', 'Scale 02', 'Scale 03'],
+      datasets: [
+        { label: 'تكلفة المتابع (ر.س)', data: keys.map(k => m.phases[k].costPerFollower), borderColor: CHART_COLORS.primary, backgroundColor: 'rgba(61,158,137,0.15)', borderWidth: 3, pointRadius: 7, pointBackgroundColor: CHART_COLORS.primary, pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3, fill: true },
+        { label: 'تكلفة الزيارة (ر.س)', data: keys.map(k => m.phases[k].costPerVisit), borderColor: CHART_COLORS.gold, backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 4], pointRadius: 5, pointBackgroundColor: CHART_COLORS.gold, pointBorderColor: '#fff', pointBorderWidth: 2, tension: 0.3 }
+      ]
+    },
+    options: { ...commonOptions, interaction: { intersect: false, mode: 'index' } }
+  });
+}
+
+function renderBudgetDistribution(m) {
+  createChart('chartBudgetDistribution', {
+    type: 'doughnut',
+    data: {
+      labels: ['الإنفاق الفعلي', 'الرصيد المتبقي', 'الضريبة'],
+      datasets: [{ data: [STATE.budget.actualSpend, m.remaining, m.vatAmount], backgroundColor: [CHART_COLORS.primary, CHART_COLORS.gold, CHART_COLORS.accent], borderColor: '#fff', borderWidth: 4, hoverOffset: 8 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '62%',
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'IBM Plex Sans Arabic', size: 12, weight: '600' }, color: '#374151', padding: 14, usePointStyle: true } },
+        tooltip: { titleFont: { family: 'IBM Plex Sans Arabic' }, bodyFont: { family: 'IBM Plex Sans Arabic' }, backgroundColor: '#211C55', padding: 10, cornerRadius: 8, callbacks: { label: ctx => { const pct = STATE.budget.total > 0 ? (ctx.parsed / STATE.budget.total) * 100 : 0; return ctx.label + ': ' + fmt(ctx.parsed, 2) + ' ر.س (' + pct.toFixed(2) + '%)'; } } }
+      }
+    }
+  });
+}
+
+function renderUtilization(m) {
+  createChart('chartUtilization', {
+    type: 'doughnut',
+    data: { labels: ['مُستغل', 'متبقٍ'], datasets: [{ data: [m.utilization, 100 - m.utilization], backgroundColor: [CHART_COLORS.primary, '#e5e7eb'], borderColor: '#fff', borderWidth: 3 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '72%',
+      plugins: { legend: { display: false }, tooltip: { titleFont: { family: 'IBM Plex Sans Arabic' }, bodyFont: { family: 'IBM Plex Sans Arabic' }, backgroundColor: '#211C55', padding: 10, cornerRadius: 8, callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed.toFixed(2) + '%' } } }
+    }
+  });
+}
+
+function phaseBarChart(canvasId, p) {
+  createChart(canvasId, {
+    type: 'bar',
+    data: {
+      labels: ['الإنفاق', 'المتابعون', 'الزيارات', 'تكلفة المتابع', 'تكلفة الزيارة'],
+      datasets: [{ label: p.name, data: [p.spend, p.followers, p.visits, p.costPerFollower, p.costPerVisit], backgroundColor: ['rgba(61,158,137,0.75)', 'rgba(61,158,137,0.6)', 'rgba(61,158,137,0.5)', 'rgba(217,164,65,0.85)', 'rgba(33,28,85,0.7)'], borderRadius: 8, borderSkipped: false }]
+    },
+    options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: false } } }
+  });
+}
+
+function barCompare(canvasId, keys, values, colors, label) {
+  createChart(canvasId, {
+    type: 'bar',
+    data: { labels: ['Testing', 'Scale 01', 'Scale 02', 'Scale 03'], datasets: [{ label, data: values, backgroundColor: colors, borderRadius: 8, borderSkipped: false }] },
+    options: { ...commonOptions, plugins: { ...commonOptions.plugins, legend: { display: false } } }
+  });
+}
+
+function renderAllChartsForTab(tabId) {
+  const m = computeAll();
+  switch (tabId) {
+    case 'overview': renderJourneyOverview(m); break;
+    case 'budget': renderBudgetDistribution(m); renderUtilization(m); break;
+    case 'testing': phaseBarChart('chartTesting', m.phases.testing); break;
+    case 'scaling':
+      phaseBarChart('chartScale1', m.phases.scale1);
+      phaseBarChart('chartScale2', m.phases.scale2);
+      phaseBarChart('chartScale3', m.phases.scale3);
+      break;
+    case 'comparison': {
+      renderJourney(m);
+      const keys = ['testing', 'scale1', 'scale2', 'scale3'];
+      barCompare('chartFollowersCompare', keys, keys.map(k => m.phases[k].followers), ['rgba(61,158,137,0.55)', 'rgba(61,158,137,0.7)', 'rgba(61,158,137,0.85)', 'rgba(217,164,65,0.9)'], 'المتابعين');
+      barCompare('chartSpendCompare', keys, keys.map(k => m.phases[k].spend), ['rgba(33,28,85,0.5)', 'rgba(33,28,85,0.65)', 'rgba(33,28,85,0.8)', 'rgba(33,28,85,0.95)'], 'الإنفاق');
+      barCompare('chartVisitsCompare', keys, keys.map(k => m.phases[k].visits), ['rgba(217,164,65,0.55)', 'rgba(217,164,65,0.7)', 'rgba(217,164,65,0.85)', 'rgba(217,164,65,0.95)'], 'الزيارات');
+      const cpfs = keys.map(k => m.phases[k].costPerFollower);
+      const minVal = Math.min(...cpfs), maxVal = Math.max(...cpfs);
+      const colors = cpfs.map(v => v === minVal ? 'rgba(46,139,87,0.85)' : v === maxVal ? 'rgba(184,58,58,0.85)' : 'rgba(217,164,65,0.75)');
+      barCompare('chartCPFCompare', keys, cpfs, colors, 'تكلفة المتابع');
+      break;
+    }
+  }
+}
+
+function openTab(tabId, ev) {
+  document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+  const el = document.getElementById(tabId);
+  if (el) {
+    el.classList.add('active');
+    requestAnimationFrame(() => renderAllChartsForTab(tabId));
+  }
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+  if (ev && ev.preventDefault) ev.preventDefault();
+}
+
+function openSubTab(subId, ev) {
+  document.querySelectorAll('.scale-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.subtab === subId));
+  const el = document.getElementById(subId);
+  if (el) el.classList.add('active');
+  requestAnimationFrame(() => {
+    const m = computeAll();
+    if (subId === 'scale1') phaseBarChart('chartScale1', m.phases.scale1);
+    else if (subId === 'scale2') phaseBarChart('chartScale2', m.phases.scale2);
+    else if (subId === 'scale3') phaseBarChart('chartScale3', m.phases.scale3);
+  });
+  if (ev && ev.preventDefault) ev.preventDefault();
+}
+
+function init() {
+  renderBindings();
+  try { if (window.lucide) lucide.createIcons(); } catch (e) {}
+  requestAnimationFrame(() => {
+    const active = document.querySelector('.container.active');
+    if (active && active.id !== 'foundation') renderAllChartsForTab(active.id);
+  });
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { Object.values(CHARTS).forEach(c => { try { c.resize(); } catch (e) {} }); }, 220);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
